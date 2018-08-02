@@ -1,22 +1,23 @@
 <h1>Login</h1>
-<div class="loginPanel">
+<div class="ui form">
     <form [formGroup]="loginForm">
-        <div>
-            <label>
-                Email:
-                <input type="text" formControlName="email">
-            </label>        
+        <div class="field">
+            <label>Email:</label>
+            <input type="text" formControlName="email">
+        </div>            
+
+        <div class="field">
+            <label>Password:</label>
+            <input type="password" formControlName="password">
         </div>
-        <div>
-            <label>
-                Password:
-                <input type="password" formControlName="password">
-            </label>
+        <div class="field">
+            <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
+            <button class="ui button" routerLink="/register">Register</button>
+            <button class="ui button" routerLink="/teams">Go Teams page</button>
         </div>
-        <button (click)="login()" [disabled]="!loginForm.valid">Login</button>
-        <button routerLink="/register">Register</button>
     </form>
+   
 </div>
 
-<button routerLink="/teams">Teams</button>
+
 

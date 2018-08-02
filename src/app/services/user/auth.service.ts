@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { User } from '../../model/user';
 
-//necessari per fer add, delete, update
+//  necessari per fer add, delete, update
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -10,7 +10,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-
   })
 };
 
@@ -32,19 +31,19 @@ export class AuthService {
         tap(resp => console.log('createResponse', resp))
       // tap((user: User) => console.log(`added user}`)),
       // catchError(this.handleError<User>('addUser'))
-    )
+    );
   }
 
   login(user): Observable<User> {
     return this.http.post<User>(this.authrUrl, user, httpOptions)
     .pipe(
       tap(resp => console.log('loginResponse', resp))
-    )
+    );
+
   }
-  
   setCurrentUser(user) {
     this.currentUser = user;
-    console.log(user)
+    console.log(user);
   }
 
   getCurrentUser() {
@@ -53,13 +52,10 @@ export class AuthService {
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
- 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
- 
       // TODO: better job of transforming error for user consumption
       console.log(`${operation} failed: ${error.message}`);
- 
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };

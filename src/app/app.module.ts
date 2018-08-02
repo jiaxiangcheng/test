@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
+import { CookieModule } from 'ngx-cookie';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -26,7 +27,8 @@ import { TeamsComponent } from './component/teams/teams.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CookieModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

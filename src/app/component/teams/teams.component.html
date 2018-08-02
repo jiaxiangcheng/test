@@ -3,14 +3,38 @@
   <ul>
     <li *ngFor="let team of teams">
       <div class="team id">
-          <label>Team id: {{team.id}}</label>
+        <label>Team id: {{team.id}}</label>
       </div>
       <div class="team name">
-          <label>Team name: {{team.name}}</label>
+        <label>Team name: {{team.name}}</label>
       </div>
       <div class="team description">
-          <label>Team description: {{team.description}}</label>
+        <label>Team description: {{team.description}}</label>
       </div>
     </li>
   </ul>
+  <div class="ui form">
+    <h1>Add team</h1>
+    <form [formGroup]="registerForm">
+      <div>
+        <label>
+          ID:
+          <input type="text" formControlName="id">
+        </label>
+      </div>
+      <div>
+        <label>
+          Name:
+          <input type="text" formControlName="name">
+        </label>
+      </div>
+      <div>
+        <label>
+          Desciption:
+          <input type="text" formControlName="description">
+        </label>
+      </div>
+    </form>
+    <button (click)="addTeam()">AddTeam</button>
+  </div>
 </div>

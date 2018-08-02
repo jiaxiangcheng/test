@@ -12,7 +12,6 @@ import { Location } from '@angular/common';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  
   users: Array<User> = [];
 
   registerForm = new FormGroup({
@@ -39,7 +38,7 @@ export class RegisterComponent implements OnInit {
     let password = this.registerForm.value.password;
 
     // TODO: Use EventEmitter with form value
-    //console.log(this.profileForm.get('username').value);
+    // console.log(this.profileForm.get('username').value);
     name = name.trim();
     if (!name) return;
     email = email.trim();

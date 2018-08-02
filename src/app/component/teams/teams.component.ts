@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/team'
 import { TeamsService } from '../../services/teams/teams.service'
+import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
 
 @Component({
   selector: 'app-teams',
@@ -10,6 +11,11 @@ import { TeamsService } from '../../services/teams/teams.service'
 export class TeamsComponent implements OnInit {
 
   teams: Array<Team> = [];
+  teamForm = new FormGroup({
+    id: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required)
+  })
 
   constructor(private teamService: TeamsService) { }
 
@@ -20,5 +26,9 @@ export class TeamsComponent implements OnInit {
   getTeams() {
     this.teamService.getTeams()
       .subscribe(teams => this.teams = teams)
+  }
+
+  addTeam() {
+    // this.teamService.addTeams(team)
   }
 }

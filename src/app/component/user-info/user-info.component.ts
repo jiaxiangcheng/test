@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/user/auth.service'
+import { AuthService } from '../../services/user/auth.service';
 
 @Component({
   selector: 'app-user-info',
@@ -14,6 +14,4 @@ export class UserInfoComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  
 }
