@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';    //per fer servir Reative form de Angular
-import { Validators } from '@angular/forms';    //validacions de camp d'input
-import { AuthService } from '../../services/user/auth.service' 
-import { User } from '../../model/user'
+import { FormGroup, FormControl } from '@angular/forms';    // per fer servir Reative form de Angular
+import { Validators } from '@angular/forms';    // validacions de camp d'input
+import { AuthService } from '../../services/user/auth.service' ;
+import { User } from '../../model/user';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private route: Router,
     private location: Location
   ) { }
@@ -40,20 +40,24 @@ export class RegisterComponent implements OnInit {
     // TODO: Use EventEmitter with form value
     // console.log(this.profileForm.get('username').value);
     name = name.trim();
-    if (!name) return;
+    if (!name) {
+      return;
+    }
     email = email.trim();
-    if (!email) return;
+    if (!email) {
+      return;
+    }
     password = password.trim();
-    if (!password) return;
-
+    if (!password) {
+      return;
+    }
     this.authService.addUser({name: name, email: email, password: password})
       .subscribe(user => {
          this.users.push(user);
       });
-      this.route.navigate(['/login'])
+      this.route.navigate(['/login']);
   }
   goBack() {
     this.location.back();
   }
-
-} 
+}

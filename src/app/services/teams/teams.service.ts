@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Team } from '../../model/team';
 import { CookieService } from 'ngx-cookie';
 
-let httpOptions = {
+const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
     'X-Auth-Token': this.token
@@ -25,7 +25,7 @@ export class TeamsService {
   ) { }
 
   getTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>(this.teamsUrl, httpOptions)
+    return this.http.get<Team[]>(this.teamsUrl, httpOptions);
   }
 
   addTeams(team): Observable<Team> {
