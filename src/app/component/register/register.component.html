@@ -1,25 +1,26 @@
 <h1>Register</h1>
 <div class="registerPanel">
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit(username.value, email.value, password.value)">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div>
             <label>
-            First Name:
-            <input type="text" formControlName="username" #username>
+                Username:
+                <input type="text" formControlName="username">
             </label>        
         </div>
         <div>
             <label>
                 Email:
-                <input type="text" formControlName="email" #email>
+                <input type="text" formControlName="email">
             </label>
         </div>
         <div>
             <label>
                 Password:
-                <input type="text" formControlName="password" #password>
-                </label>    
+                <input type="password" formControlName="password">
+            </label>    
         </div>
-        <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+        <button type="submit" [disabled]="!registerForm.valid">Submit</button>
+        <button (click)="goBack()">Back</button>
     </form>
 </div>
 

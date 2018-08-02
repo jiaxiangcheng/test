@@ -1,0 +1,22 @@
+<h1>Login</h1>
+<div class="loginPanel">
+    <form [formGroup]="loginForm">
+        <div>
+            <label>
+                Email:
+                <input type="text" formControlName="email">
+            </label>        
+        </div>
+        <div>
+            <label>
+                Password:
+                <input type="password" formControlName="password">
+            </label>
+        </div>
+        <button (click)="login()" [disabled]="!loginForm.valid">Login</button>
+        <button routerLink="/register">Register</button>
+    </form>
+</div>
+
+<button routerLink="/teams">Teams</button>
+

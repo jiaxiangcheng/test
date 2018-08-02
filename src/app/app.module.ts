@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { EditComponent } from './edit/edit.component';
-import { UserInfoComponent } from './user-info/user-info.component';
+import { LoginComponent } from './component/login/login.component';
+import { RegisterComponent } from './component/register/register.component';
+import { EditComponent } from './component/edit/edit.component';
+import { UserInfoComponent } from './component/user-info/user-info.component';
+import { TeamsComponent } from './component/teams/teams.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserInfoComponent } from './user-info/user-info.component';
     LoginComponent,
     RegisterComponent,
     EditComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    TeamsComponent
   ],
   imports: [
     BrowserModule,
