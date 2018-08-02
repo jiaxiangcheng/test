@@ -1,40 +1,49 @@
-<h1>Teams</h1>
+<h1>Team list</h1>
+<div class="ui divider"></div>
 <div>
-  <ul>
-    <li *ngFor="let team of teams">
-      <div class="team id">
-        <label>Team id: {{team.id}}</label>
-      </div>
-      <div class="team name">
-        <label>Team name: {{team.name}}</label>
-      </div>
-      <div class="team description">
-        <label>Team description: {{team.description}}</label>
-      </div>
-    </li>
-  </ul>
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of teams">
+        <td>{{ team.id }}</td>
+        <td>{{ team.name }}</td>
+        <td>{{ team.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+
   <div class="ui form">
-    <h1>Add team</h1>
-    <form [formGroup]="registerForm">
-      <div>
+    <h1>Add team:</h1>
+    <form [formGroup]="teamForm">
+      <div class="ui field">
         <label>
           ID:
           <input type="text" formControlName="id">
         </label>
       </div>
-      <div>
+      <div class="ui field">
         <label>
           Name:
           <input type="text" formControlName="name">
         </label>
       </div>
-      <div>
+      <div class="ui field">
         <label>
           Desciption:
           <input type="text" formControlName="description">
         </label>
       </div>
     </form>
-    <button (click)="addTeam()">AddTeam</button>
+    
+    
   </div>
+  <div class="ui center aligned basic segment">
+      <button class="ui blue centered aligned button" (click)="addTeam()">AddTeam</button>
+   </div>
 </div>
