@@ -10,7 +10,7 @@
             <label>Password:</label>
             <input type="password" formControlName="password">
         </div>
-        <div class="field">
+        <div class="ui center aligned basic segment">
             <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
             <button class="ui button" routerLink="/register">Register</button>
             <button class="ui button" routerLink="/teams">Go Teams page</button>

@@ -13,6 +13,12 @@ import { CookieService } from 'ngx-cookie';
 })
 export class TeamsService {
   private token = this._cookieService.get('token');
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-Auth-Token': this.token
+    })
+  };
   private teamsUrl = 'https://qtdas-admin.herokuapp.com/api/teams';
 
   private httpOptions = {
