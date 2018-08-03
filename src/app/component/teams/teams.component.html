@@ -1,49 +1,92 @@
+<app-jw-modal id="deleteTeamModal">
+  <div class="content-panel">
+      <div class="ui icon header">
+        <i class="trash icon"></i>
+        Are you sure to delete the team?
+      </div>
+      <div class="content">
+        Team name: <p style="font-weight: bold;">{{ teamToDelete.name }}</p>
+      </div>
+  </div>
+
+  <div class="actions">
+    <div class="ui green basic ok button"  (click)="closeDeleteModal('deleteTeamModal', 'Yes')">
+      <i class="checkmark icon"></i>
+      Yes
+    </div>
+    <div class="ui red basic cancel button"  (click)="closeDeleteModal('deleteTeamModal', 'No')">
+      <i class="remove icon"></i>
+      No
+    </div>
+  </div>
+</app-jw-modal>
+
+<app-jw-modal id="infoModal">
+    <div class="content-panel">
+        <div class="ui icon header">
+          <i class="exclamation icon"></i>
+          Error Message:
+        </div>
+        <div class="content">
+          {{ err.error }}
+        </div>
+    </div>
+  
+    <div class="actions">
+      <div class="ui green basic ok button"  (click)="closeInfoModal('infoModal')">
+        <i class="checkmark icon"></i>
+        OK
+      </div>
+    </div>
+  </app-jw-modal>
+
+<div class="ui form">
+  <h1>Add team:</h1>
+  <div class="ui divider"></div>
+  <form [formGroup]="teamForm">
+    <div class="ui field">
+      <label>
+        Name:
+        <input type="text" formControlName="name">
+      </label>
+    </div>
+    <div class="ui field">
+      <label>
+        Desciption:
+        <input type="text" formControlName="description">
+      </label>
+    </div>
+  </form>
+  <!-- <p *ngIf="showError">{{ errorMessage }} </p> -->
+</div>
+
+<div class="ui center aligned basic segment">
+  <button class="ui blue centered aligned button" (click)="addTeam()" [disabled]="!teamForm.valid">AddTeam</button>
+  <button class="ui centered aligned button" (click)="goBack()">Back</button>
+</div>
+
+
 <h1>Team list</h1>
 <div class="ui divider"></div>
 <div>
   <table class="ui celled table">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Description</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let team of teams">
-        <td>{{ team.id }}</td>
+        <td style="display: none">{{ team._id }}</td>
         <td>{{ team.name }}</td>
         <td>{{ team.description }}</td>
+        <td><button class="ui icon button" (click)="openDeleteModal('deleteTeamModal', team)">
+          <i class="trash icon"></i>
+        </button></td>
       </tr>
     </tbody>
   </table>
 
-  <div class="ui form">
-    <h1>Add team:</h1>
-    <form [formGroup]="teamForm">
-      <div class="ui field">
-        <label>
-          ID:
-          <input type="text" formControlName="id">
-        </label>
-      </div>
-      <div class="ui field">
-        <label>
-          Name:
-          <input type="text" formControlName="name">
-        </label>
-      </div>
-      <div class="ui field">
-        <label>
-          Desciption:
-          <input type="text" formControlName="description">
-        </label>
-      </div>
-    </form>
-    
-    
-  </div>
-  <div class="ui center aligned basic segment">
-      <button class="ui blue centered aligned button" (click)="addTeam()">AddTeam</button>
-   </div>
 </div>
