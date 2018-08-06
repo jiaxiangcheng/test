@@ -9,7 +9,6 @@ import { CookieModule } from 'ngx-cookie';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
-import { EditComponent } from './component/edit/edit.component';
 import { UserInfoComponent } from './component/user-info/user-info.component';
 import { TeamsComponent } from './component/teams/teams.component';
 import { ModalComponent } from './component/modal/modal.component';
@@ -22,7 +21,6 @@ import { JwtModule } from '@auth0/angular-jwt';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    EditComponent,
     UserInfoComponent,
     TeamsComponent,
     ModalComponent

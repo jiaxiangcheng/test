@@ -19,8 +19,11 @@
                 <input type="password" formControlName="password">
             </label>    
         </div>
-        <button class="ui blue button" type="submit" [disabled]="!registerForm.valid">Submit</button>
-        <button class="ui button" (click)="goBack()">Back</button>
+        <div class="ui center aligned basic segment">
+            <button class="ui blue button" type="submit" [disabled]="!registerForm.valid">Submit</button>
+            <button class="ui button" (click)="goBack()">Back</button>
+        </div>
+            
     </form>
 </div>
 

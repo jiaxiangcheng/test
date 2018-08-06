@@ -15,14 +15,20 @@ import { Router } from '@angular/router';
 export class TeamsComponent implements OnInit {
 
   teams: Array<Team> = [];
-  totalTeams: Number = 0;
+  totalTeams;
   numPerPage = 10;
   loopTimes;
   teamToDelete: Team = {
     name: '',
     description: ''
   };
+  teamToUpdate;
+
   teamForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required)
+  });
+  updateTeamForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required)
   });
@@ -40,6 +46,7 @@ export class TeamsComponent implements OnInit {
   ngOnInit() {
     // this.getTeams();
     this.getTeamsPara(1);
+    console.log('total teams', this.totalTeams);
   }
 
   setPageSize(event) {
@@ -60,11 +67,12 @@ export class TeamsComponent implements OnInit {
     this.teamService.getTeamsPara(pageNumber, this.numPerPage)
       .subscribe(res => {
         this.totalTeams = res.total;
-        const totalPage = Math.round(Number(this.totalTeams) / this.numPerPage);
-        console.log('totalpage: ', totalPage);
+        const totalPage = Math.ceil(Number(this.totalTeams) / this.numPerPage);
+        // console.log('totalpage: ', totalPage);
         this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
         this.teams = res.teams;
       });
+
   }
 
   addTeam() {
@@ -77,19 +85,32 @@ export class TeamsComponent implements OnInit {
           // this.showError = true;
         } else {
           // console.log('addded');
-          this.teams.push(team);
+          this.getTeamsPara(1);
         }
+        this.closeModal('addTeamModal');
       });
   }
 
-  updateTeam(team) {
-    this.teamService.setTeamToUpdate(team);
-    this.router.navigate(['/teamEdit']);
+  updateTeam() {
+    const auxTeam = {
+      _id: this.teamToUpdate._id,
+      name: this.updateTeamForm.value.name,
+      description: this.updateTeamForm.value.description
+    };
+
+    this.teamService.updateTeam(auxTeam)
+    .subscribe(res => {
+      this.closeModal('editTeamModal');
+      this.getTeamsPara(1);
+    });
   }
 
   deleteTeam() {
     this.teams = this.teams.filter(t => t !== this.teamToDelete);
-    this.teamService.deleteTeam(this.teamToDelete).subscribe();
+    this.teamService.deleteTeam(this.teamToDelete)
+      .subscribe(res => {
+        this.getTeamsPara(1);
+      });
   }
 
   openDeleteModal(id: string, team: Team) {
@@ -97,7 +118,17 @@ export class TeamsComponent implements OnInit {
     this.modalService.open(id);
   }
 
-  closeInfoModal(id) {
+  openEditModal(id, team) {
+    this.teamToUpdate = team;
+    // console.log('team to uptdate', this.teamToUpdate);
+    this.modalService.open(id);
+  }
+
+  openModal(id) {
+    this.modalService.open(id);
+  }
+
+  closeModal(id) {
     this.modalService.close(id);
   }
 

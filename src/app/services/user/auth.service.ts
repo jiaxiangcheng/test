@@ -51,7 +51,6 @@ export class AuthService {
   }
   setCurrentUser(user) {
     this.currentUser = user;
-    console.log(user);
   }
 
   getCurrentUser() {

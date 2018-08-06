@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
     this.authService.login({email: email, password: password})
       .subscribe(user => {
         // console.log(user);
-        console.log('2222');
         this.authService.setCurrentUser({email, password, token: user.token});
         this.router.navigate(['/userinfo']);
         this.setCookie();
@@ -54,7 +53,9 @@ export class LoginComponent implements OnInit {
     const user = this.authService.getCurrentUser();
     const authToken = user.token;
     this._cookieService.put('token', authToken);
+
     localStorage.setItem('token', authToken);
+    localStorage.setItem('email', user.email);
   }
 
   getCookie(key) {

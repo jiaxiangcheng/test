@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class UserInfoComponent implements OnInit {
 
 
-  currentUser;
+  token = localStorage.getItem('token');
+  email = localStorage.getItem('email');
 
   constructor(
     private authservice: AuthService,
@@ -20,13 +21,11 @@ export class UserInfoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.authservice.getCurrentUser();
-    console.log('this current', this.currentUser);
-    console.log('this get', this.authservice.getCurrentUser());
   }
 
   logOut() {
     this._cookieService.remove('token');
+    localStorage.clear();
     this.router.navigate(['/login']);
   }
 }
