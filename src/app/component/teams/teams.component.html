@@ -38,7 +38,7 @@
         OK
       </div>
     </div>
-  </app-jw-modal>
+</app-jw-modal>
 
 <div class="ui form">
   <h1>Add team:</h1>
@@ -67,21 +67,23 @@
 
 <h1>Team list</h1>
 <div class="ui divider"></div>
-<div>
+<div class="table-size-controller" style="text-align: right">
+  Table size: 
+  <select class="ui dropdown" (change)="setPageSize($event)">
+    <option value="4">4</option>
+    <option value="6">6</option>
+    <option value="8">8</option>
+    <option selected="selected">10</option>
+  </select>
+</div>
+<div class="table-content">
   <table class="ui celled table">
     <thead>
       <tr>
         <th>Name</th>
         <th>Description</th>
         <th></th>
-        <th style="text-align: right">
-          <select class="ui dropdown" (change)="setPageSize($event)">
-            <option value="4">4</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option selected="selected">10</option>
-          </select>
-        </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
