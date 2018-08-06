@@ -15,7 +15,9 @@ import { Router } from '@angular/router';
 export class TeamsComponent implements OnInit {
 
   teams: Array<Team> = [];
-  total: Number;
+  totalTeams: Number = 0;
+  numPerPage = 10;
+  loopTimes;
   teamToDelete: Team = {
     name: '',
     description: ''
@@ -36,18 +38,35 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTeams();
+    // this.getTeams();
+    this.getTeamsPara(1);
   }
 
-  getTeams() {
-    this.teamService.getTeams()
-      .subscribe(res => {
-        console.log(res.total);
-        this.total = res.total;
-        this.teams = res.teams;
-      }
-      );
+  setPageSize(event) {
+    this.numPerPage = event.target.value;
+    this.getTeamsPara(1);
   }
+
+  // getTeams() {
+  //   this.teamService.getTeams()
+  //     .subscribe(res => {
+  //       console.log(res.total);
+  //       this.total = res.total;
+  //       this.teams = res.teams;
+  //     }
+  //     );
+  // }
+  getTeamsPara(pageNumber) {
+    this.teamService.getTeamsPara(pageNumber, this.numPerPage)
+      .subscribe(res => {
+        this.totalTeams = res.total;
+        const totalPage = Math.round(Number(this.totalTeams) / this.numPerPage);
+        console.log('totalpage: ', totalPage);
+        this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
+        this.teams = res.teams;
+      });
+  }
+
   addTeam() {
     const name = this.teamForm.value.name;
     const description = this.teamForm.value.description;
