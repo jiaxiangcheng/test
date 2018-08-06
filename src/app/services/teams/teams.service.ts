@@ -16,6 +16,7 @@ import { ModalService } from '../modal/modal.service';
 export class TeamsService {
   private token = this._cookieService.get('token');
   private teamsUrl = 'https://qtdas-admin.herokuapp.com/api/teams';
+  private teamToUpdate: Team;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -31,8 +32,16 @@ export class TeamsService {
     private modalService: ModalService
   ) { }
 
-  getTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>(this.teamsUrl, this.httpOptions);
+  setTeamToUpdate(team) {
+    this.teamToUpdate = team;
+  }
+
+  getTeamToUpdate(): Team {
+    return this.teamToUpdate;
+  }
+
+  getTeams(): Observable<any> {
+    return this.http.get<any>(this.teamsUrl, this.httpOptions);
   }
 
   addTeams(team): Observable<Team> {
@@ -47,6 +56,13 @@ export class TeamsService {
     return this.http.delete<Team>(`${this.teamsUrl}/${team._id}`, this.httpOptions).pipe(
       catchError(this.handleError<Team>('deleteTeam')),
       tap(_ => console.log(`deleted team id=${team._id}`)
+    ));
+  }
+
+  updateTeam(team): Observable<any> {
+    return this.http.put(`${this.teamsUrl}/${team._id}`, {name: team.name, description: team.description},  this.httpOptions).pipe(
+      catchError(this.handleError<Team>('updateTeam')),
+      tap(_ => console.log(`updated team id=${team._id}`)
     ));
   }
 

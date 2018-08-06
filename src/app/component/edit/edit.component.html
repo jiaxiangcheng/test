@@ -1,3 +1,24 @@
-<p>
-  edit works!
-</p>
+  <div class="ui form">
+    <h1>Update the team with name : {{ teamUpdate?.name }}</h1>
+    <div class="ui divider"></div>
+    <div class="form">
+        <form [formGroup] = "updateTeamForm">
+            <div class="ui field">
+                <label>
+                    Name:
+                    <input type="text" formControlName="name">
+                  </label>
+            </div>
+            <div class="ui field">
+                <label>
+                  Desciption:
+                  <input type="text" formControlName="description">
+                </label>
+              </div>
+        </form>
+        <div class="ui center aligned basic segment">
+            <button class="ui blue centered aligned button" (click)="updateTeam()" [disabled]="!updateTeamForm.valid">Save</button>
+            <button class="ui button" (click)="goBack()">Back</button>
+          </div>
+    </div>
+</div>

@@ -1,6 +1,9 @@
-<div class="userInfo">
-    <h1>Hello: {{currentUser.email}}</h1>
-    <h1>Your token:</h1> {{currentUser.token}}
+<div class="content">
+    <div class="userInfo">
+        <h1>Hello: {{currentUser?.email}}</h1>
+        <h3>Your token:</h3> {{currentUser?.token}}
+    </div>
 </div>
+
 <button class="ui button" routerLink="/teams">Go Teams page</button>
-<button class="ui red button" >Log Out</button>
+<button class="ui red button" (click)="logOut()">Log Out</button>

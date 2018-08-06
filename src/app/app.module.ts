@@ -14,6 +14,9 @@ import { UserInfoComponent } from './component/user-info/user-info.component';
 import { TeamsComponent } from './component/teams/teams.component';
 import { ModalComponent } from './component/modal/modal.component';
 
+import { JwtModule } from '@auth0/angular-jwt';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,8 +34,20 @@ import { ModalComponent } from './component/modal/modal.component';
     FormsModule,
     HttpClientModule,
     CookieModule.forRoot(),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('token');
+        },
+        whitelistedDomains: ['localhost:3001'],
+        blacklistedRoutes: ['localhost:3001/auth/']
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+
+ }

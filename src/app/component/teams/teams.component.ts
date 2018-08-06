@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '../../../../node_modules/@an
 import { ModalService } from '../../services/modal/modal.service';
 import { Location } from '../../../../node_modules/@angular/common';
 import { MessageService } from '../../services/messages/message.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -14,6 +15,7 @@ import { MessageService } from '../../services/messages/message.service';
 export class TeamsComponent implements OnInit {
 
   teams: Array<Team> = [];
+  total: Number;
   teamToDelete: Team = {
     name: '',
     description: ''
@@ -29,7 +31,8 @@ export class TeamsComponent implements OnInit {
     private teamService: TeamsService,
     private modalService: ModalService,
     private location: Location,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -38,12 +41,13 @@ export class TeamsComponent implements OnInit {
 
   getTeams() {
     this.teamService.getTeams()
-      .subscribe(teams => {
-        this.teams = teams;
+      .subscribe(res => {
+        console.log(res.total);
+        this.total = res.total;
+        this.teams = res.teams;
       }
       );
   }
-
   addTeam() {
     const name = this.teamForm.value.name;
     const description = this.teamForm.value.description;
@@ -53,10 +57,15 @@ export class TeamsComponent implements OnInit {
           this.err = this.messageService.getMessage();
           // this.showError = true;
         } else {
-          console.log('addded')
+          // console.log('addded');
           this.teams.push(team);
         }
       });
+  }
+
+  updateTeam(team) {
+    this.teamService.setTeamToUpdate(team);
+    this.router.navigate(['/teamEdit']);
   }
 
   deleteTeam() {
