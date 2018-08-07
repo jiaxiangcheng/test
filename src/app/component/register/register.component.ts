@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';    // per fer servir Reative form de Angular
 import { Validators } from '@angular/forms';    // validacions de camp d'input
-import { AuthService } from '../../services/user/auth.service' ;
 import { User } from '../../model/user';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { UserService } from '../../services/user/user.service';
+import { MessageService } from '../../services/messages/message.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-register',
@@ -12,20 +14,21 @@ import { Location } from '@angular/common';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  users: Array<User> = [];
 
   registerForm = new FormGroup({
     username: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required)
   });
-
+  err: any;
 
 
   constructor(
-    private authService: AuthService,
+    private userService: UserService,
     private route: Router,
-    private location: Location
+    private location: Location,
+    private messageService: MessageService,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -51,13 +54,23 @@ export class RegisterComponent implements OnInit {
     if (!password) {
       return;
     }
-    this.authService.addUser({name: name, email: email, password: password})
+    this.userService.addUser({name: name, email: email, password: password})
       .subscribe(user => {
-         this.users.push(user);
+        if (this.messageService.getExists()) {
+          this.err = this.messageService.getMessage();
+          this.modalService.open('infoModal');
+          this.messageService.setMessage(null);
+        } else {
+          this.route.navigate(['/login']);
+        }
       });
-      this.route.navigate(['/login']);
   }
   goBack() {
-    this.location.back();
+    this.route.navigate(['/login']);
   }
+
+  closeModal(id) {
+    this.modalService.close(id);
+  }
+
 }

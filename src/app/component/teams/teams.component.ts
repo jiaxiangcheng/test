@@ -33,7 +33,6 @@ export class TeamsComponent implements OnInit {
     description: new FormControl('', Validators.required)
   });
   err: any;
-  // showError = false;
 
   constructor(
     private teamService: TeamsService,
@@ -82,9 +81,7 @@ export class TeamsComponent implements OnInit {
       .subscribe(team => {
         if (this.messageService.getExists()) {
           this.err = this.messageService.getMessage();
-          // this.showError = true;
         } else {
-          // console.log('addded');
           this.getTeamsPara(1);
         }
         this.closeModal('addTeamModal');

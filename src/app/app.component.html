@@ -1,12 +1,7 @@
-<div class="navigation">
-    <div class="top-bar">
-        <div class="ui menu">
-            <div class="right menu">
-                <a class="item" routerLink="/register" *ngIf="!logged">Sign Up</a>
-            </div>
-        </div>
-    </div>
+<div class="top-bar">
+    <app-top-bar></app-top-bar>
 </div>
+
 <div class="content">
     <router-outlet></router-outlet>
 </div>

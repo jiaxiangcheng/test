@@ -1,21 +1,66 @@
-<h1>Login</h1>
-<div class="ui divider"></div>
-<div class="ui form">
-    <form [formGroup]="loginForm">
-        <div class="field">
-            <label>Email:</label>
-            <input type="text" formControlName="email">
-        </div>            
+<!-- <app-jw-modal id="infoModal" >
+    <div class="modal" [ngStyle]="getStyle()">
+        <div class="content-panel">
+            <div class="ui icon header">
+                <i class="exclamation icon"></i>
+                Error Message:
+            </div>
+            <div class="content">
+                {{ err?.error }}
+            </div>
+        </div>
+            
+        <div class="actions">
+            <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
+            <i class="checkmark icon"></i>
+            OK
+            </div>
+        </div>
+    </div>
+</app-jw-modal> -->
 
-        <div class="field">
-            <label>Password:</label>
-            <input type="password" formControlName="password">
+<app-jw-modal id="infoModal" >
+    <div class="content-panel">
+        <div class="ui icon header">
+            <i class="exclamation icon"></i>
+            Error Message:
         </div>
-        <div class="ui center aligned basic segment">
-            <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
+        <div class="content">
+            {{ err?.error }}
         </div>
-    </form>
-   
+    </div>
+        
+    <div class="actions">
+        <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
+        <i class="checkmark icon"></i>
+        OK
+        </div>
+    </div>
+</app-jw-modal>
+    
+
+
+<div class="ui compact segment" id= "form-container">
+    <h1>Login</h1>
+    <div class="ui form">
+        <form [formGroup]= "loginForm">
+            <div class="field">
+                <label>Email:</label>
+                <input type="text" formControlName="email">
+                <div class= "error-message" *ngIf= "loginForm.get('email').invalid && loginForm.get('email').touched">
+                    <p style="color: red">Wrong format!</p>
+                </div>
+            </div>            
+
+            <div class="field">
+                <label>Password:</label>
+                <input type="password" formControlName="password" style="width: 200px;">
+            </div>
+            <div class="login-button" style="text-align: center">
+                <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 

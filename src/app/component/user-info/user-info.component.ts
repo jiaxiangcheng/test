@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/user/auth.service';
-import { CookieService } from 'ngx-cookie';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-info',
@@ -10,22 +7,14 @@ import { Router } from '@angular/router';
 })
 export class UserInfoComponent implements OnInit {
 
-
-  token = localStorage.getItem('token');
-  email = localStorage.getItem('email');
+  token;
+  email;
 
   constructor(
-    private authservice: AuthService,
-    private _cookieService: CookieService,
-    private router: Router
   ) { }
 
   ngOnInit() {
-  }
-
-  logOut() {
-    this._cookieService.remove('token');
-    localStorage.clear();
-    this.router.navigate(['/login']);
+    this.token = localStorage.getItem('token');
+    this.email = localStorage.getItem('email');
   }
 }

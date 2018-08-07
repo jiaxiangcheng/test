@@ -14,7 +14,7 @@ import { ModalService } from '../modal/modal.service';
   providedIn: 'root'
 })
 export class TeamsService {
-  private token = this._cookieService.get('token');
+  private token = this.cookieService.get('token');
   private teamsUrl = 'https://qtdas-admin.herokuapp.com/api/teams';
   private teamToUpdate: Team;
 
@@ -27,7 +27,7 @@ export class TeamsService {
 
   constructor(
     private http: HttpClient,
-    private _cookieService: CookieService,
+    private cookieService: CookieService,
     private messageService: MessageService,
     private modalService: ModalService
   ) { }
@@ -79,7 +79,6 @@ export class TeamsService {
         console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
         this.messageService.setMessage(error);
-        this.modalService.open('infoModal');
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);

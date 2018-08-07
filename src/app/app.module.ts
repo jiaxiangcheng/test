@@ -14,6 +14,7 @@ import { TeamsComponent } from './component/teams/teams.component';
 import { ModalComponent } from './component/modal/modal.component';
 
 import { JwtModule } from '@auth0/angular-jwt';
+import { TopBarComponent } from './component/top-bar/top-bar/top-bar.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { JwtModule } from '@auth0/angular-jwt';
     RegisterComponent,
     UserInfoComponent,
     TeamsComponent,
-    ModalComponent
+    ModalComponent,
+    TopBarComponent
   ],
   imports: [
     BrowserModule,

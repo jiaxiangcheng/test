@@ -1,37 +1,43 @@
-<h1>Register</h1>
-<div class="ui form">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="field">
-            <label>
-                Username:
-                <input type="text" formControlName="username">
-            </label>        
+<app-jw-modal id="infoModal">
+    <div class="content-panel">
+        <div class="ui icon header">
+            <i class="exclamation icon"></i>
+            Error Message:
         </div>
-        <div class="field">
-            <label>
-                Email:
-                <input type="text" formControlName="email">
-            </label>
+        <div class="content">
+            {{ err?.error }}
         </div>
-        <div class="field">
-            <label>
-                Password:
-                <input type="password" formControlName="password">
-            </label>    
-        </div>
-        <div class="ui center aligned basic segment">
-            <button class="ui blue button" type="submit" [disabled]="!registerForm.valid">Submit</button>
-            <button class="ui button" (click)="goBack()">Back</button>
-        </div>
-            
-    </form>
-</div>
-
-
-<!-- <div *ngIf="users.length">
-    <div>
-        <ul>
-            <li *ngFor="let user of users"> {{user.name}} </li>
-        </ul>>
     </div>
-</div> -->
+    
+    <div class="actions">
+        <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
+        <i class="checkmark icon"></i>
+        OK
+        </div>
+    </div>
+</app-jw-modal>
+
+
+<div class="ui compact segment" id= "form-container">
+    <h1>Register</h1>
+    <div class="ui form">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="field">
+                <label>Username:</label>
+                <input type="text" formControlName="username" style="width: 200px;">        
+            </div>
+            <div class="field">
+                <label>Email:</label>
+                <input type="text" formControlName="email" style="width: 200px;">
+            </div>
+            <div class="field">
+                <label>Password:</label>    
+                <input type="password" formControlName="password" style="width: 200px;">
+            </div>
+            <div class="action-buttons" style="text-align: center">
+                <button class="ui blue button" type="submit" [disabled]="!registerForm.valid">Submit</button>
+                <button class="ui button" (click)="goBack()">Back</button>
+            </div>
+        </form>
+    </div>
+</div>

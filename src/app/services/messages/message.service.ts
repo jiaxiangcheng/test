@@ -4,20 +4,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MessageService {
-  message: any;
-  exists = false;
+  message;
   constructor() { }
 
-  setMessage(message: any) {
+  setMessage(message) {
     this.message = message;
-    this.exists = true;
   }
 
   getMessage() {
     return this.message;
   }
 
-  getExists() {
-    return this.exists;
+  getExists(): boolean {
+    return this.message;
   }
 }

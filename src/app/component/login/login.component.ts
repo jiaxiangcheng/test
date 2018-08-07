@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
-
+import { FormGroup, FormControl, Validators, FormBuilder} from '../../../../node_modules/@angular/forms';
 
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/user/auth.service';
 import { CookieService } from 'ngx-cookie';
+import { UserService } from '../../services/user/user.service';
+import { MessageService } from '../../services/messages/message.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-login',
@@ -13,23 +15,44 @@ import { CookieService } from 'ngx-cookie';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
-  });
+  loginForm: FormGroup;
+  err: any;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private _cookieService: CookieService
+    private cookieService: CookieService,
+    private userService: UserService,
+    private messageService: MessageService,
+    private modalService: ModalService,
+    private formBService: FormBuilder
   ) { }
 
   ngOnInit() {
+    this.loginForm = this.formBService.group({
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required
+      ]]
+    });
+  }
 
+  setCookie() {
+    const user = this.authService.getCurrentUser();
+    const authToken = user.token;
+    this.cookieService.put('token', authToken);
+
+    localStorage.setItem('token', authToken);
+    localStorage.setItem('email', user.email);
+  }
+  getCookie(key) {
+    return this.cookieService.get(key);
   }
 
   login() {
-    console.log('asdasdasd');
     let email = this.loginForm.value.email;
     let password = this.loginForm.value.password;
     email = email.trim();
@@ -42,23 +65,21 @@ export class LoginComponent implements OnInit {
     }
     this.authService.login({email: email, password: password})
       .subscribe(user => {
-        // console.log(user);
-        this.authService.setCurrentUser({email, password, token: user.token});
-        this.router.navigate(['/userinfo']);
-        this.setCookie();
-        // console.log(this.getCookie('token'));
+        if (this.messageService.getExists()) {
+          this.err = this.messageService.getMessage();
+          this.modalService.open('infoModal');
+        } else {
+          this.authService.setCurrentUser({email, password, token: user.token});
+          this.setCookie();
+          // 呼叫userService的方法，让订阅者们收到新的值
+          this.userService.changeUserStatus('loginSuccess');
+          this.router.navigate(['/userinfo']);
+        }
     });
   }
-  setCookie() {
-    const user = this.authService.getCurrentUser();
-    const authToken = user.token;
-    this._cookieService.put('token', authToken);
 
-    localStorage.setItem('token', authToken);
-    localStorage.setItem('email', user.email);
-  }
-
-  getCookie(key) {
-    return this._cookieService.get(key);
+  closeModal(id) {
+    this.modalService.close(id);
+    this.messageService.setMessage(null);
   }
 }
