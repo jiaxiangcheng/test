@@ -47,14 +47,21 @@
             <div class="field">
                 <label>Email:</label>
                 <input type="text" formControlName="email">
-                <div class= "error-message" *ngIf= "loginForm.get('email').invalid && loginForm.get('email').touched">
-                    <p style="color: red">Wrong format!</p>
+                <div class= "error-message" *ngIf= "loginForm.get('email').invalid && loginForm.get('email').touched" style="text-align: center">
+                    <div class="ui pointing red label">
+                        Wrong email format!
+                    </div>
                 </div>
             </div>            
 
             <div class="field">
                 <label>Password:</label>
                 <input type="password" formControlName="password" style="width: 200px;">
+                <div class= "error-message" *ngIf= "loginForm.get('password').invalid && loginForm.get('password').touched" style="text-align: center">
+                    <div class="ui pointing red label">
+                        Wrong password format!
+                    </div>
+                </div>
             </div>
             <div class="login-button" style="text-align: center">
                 <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
