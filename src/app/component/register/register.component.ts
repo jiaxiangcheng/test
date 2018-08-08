@@ -16,9 +16,18 @@ import { ModalService } from '../../services/modal/modal.service';
 export class RegisterComponent implements OnInit {
 
   registerForm = new FormGroup({
-    username: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3)
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(7)
+    ])
   });
   err: any;
 

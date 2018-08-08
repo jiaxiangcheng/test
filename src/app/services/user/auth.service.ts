@@ -82,6 +82,7 @@ export class AuthService {
         console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
         this.messageService.setMessage(error);
+        this.modalService.open('infoModal');
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);

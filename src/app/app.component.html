@@ -1,9 +1,23 @@
 <div class="top-bar">
-    <app-top-bar></app-top-bar>
+    <mat-toolbar style="height: 50px; background-color: grey">
+        <app-top-bar></app-top-bar>
+    </mat-toolbar>
 </div>
 
 <div class="content">
-    <router-outlet></router-outlet>
-</div>
+    <mat-sidenav-container class="side-bar-container" style="position: absolute; width: 100%; height: 100%;">
+        <mat-sidenav id="sidbar" #sidenav [opened]="opened" mode="side" >
+            <div class="side content">
+                <app-side-bar></app-side-bar>
+            </div>
+        </mat-sidenav>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+        <mat-sidenav-content>
+            <div class="page content">
+
+                <router-outlet></router-outlet>
+            </div>
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+</div>

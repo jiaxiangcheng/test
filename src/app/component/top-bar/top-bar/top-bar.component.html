@@ -1,20 +1,39 @@
-<div class="navigation">
+<div class="top-bar-content">
+    <div class="left items">
+        <div class="sidebar button">
+            <button class="ui labeled icon button" (click)="toggle()">
+                <i class="sidebar icon"></i>Menu
+            </button>
+        </div>
+    </div>
+    <div class="right items">
+        <div *ngIf="!logged">
+            <div class="sign-up" style="position: absolute; right: 15px; top: 6px">
+                <button class= "ui button" id= "sign-up-button" routerLink="/register">Sign Up</button>
+            </div>
+        </div>
+        <div *ngIf="logged">
+            <div class="profile" style="position: absolute; right: 135px; top: 6px">
+                <a class="ui label">
+                    <img class="ui right spaced avatar image" src="/src/assets/image/boy.jpg">
+                    {{ email }}
+                </a>
+            </div>
+            <div class="logout" style="position: absolute; right: 15px; top: 6px">
+                <button class= "ui red button" style="height: 39.5px; background-color: red" (click)="logout()">
+                    <i class= "sign-out icon"></i>
+                    Log out
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="navigation">
   <div class="top-bar">
       <div class="ui menu">
-          <div class="right menu" *ngIf="!logged">
-              <button class= "ui button" routerLink="/register">Sign Up</button>
-          </div>
-          <div class="right menu" *ngIf="logged">
-
-              <a class="ui label">
-                  <img class="ui right spaced avatar image" src="/src/assets/image/boy.jpg">
-                  {{ email }}
-                </a>
-              <button class= "ui red button" style="height: 39.5px; background-color: red" (click)="logout()">
-                  <i class= "sign-out icon"></i>
-                  Log out
-              </button>
-          </div>
+          
       </div>
   </div>
-</div>
+</div> -->

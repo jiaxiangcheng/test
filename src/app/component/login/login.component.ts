@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
       ]],
       password: ['', [
         Validators.required,
-        Validators.minLength(5)
+        Validators.minLength(7)
       ]]
     });
   }

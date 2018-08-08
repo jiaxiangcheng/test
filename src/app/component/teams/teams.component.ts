@@ -111,6 +111,7 @@ export class TeamsComponent implements OnInit {
   }
 
   openDeleteModal(id: string, team: Team) {
+    console.log('estic aqui');
     this.teamToDelete = team;
     this.modalService.open(id);
   }

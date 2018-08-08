@@ -28,8 +28,7 @@ export class UserService {
   private createUserUrl = 'https://qtdas-admin.herokuapp.com/api/users';
   constructor(
     private http: HttpClient,
-    private messageService: MessageService,
-    private modalService: ModalService
+    private messageService: MessageService
   ) { }
 
   addUser(user): Observable<User> {
