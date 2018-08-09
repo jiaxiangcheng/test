@@ -92,10 +92,11 @@ export class TeamsService {
     return (error: any): Observable<T> => {
       if (error.status !== 200) {
         // TODO: send the error to remote logging infrastructure
-        console.error(error);
+        // console.error(error);
         // TODO: better job of transforming error for user consumption
-        console.log(`${operation} failed: ${error.message}`);
+        // console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
+        this.messageService.setMessage(error.error);
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);

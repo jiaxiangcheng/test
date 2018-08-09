@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';    // per fer servir Reative form de Angular
 import { Validators } from '@angular/forms';    // validacions de camp d'input
-import { User } from '../../model/user';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { UserService } from '../../services/user/user.service';
 import { MessageService } from '../../services/messages/message.service';
+import { DialogService } from '../../services/dialog/dialog.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -33,8 +33,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: Router,
-    private location: Location,
     private messageService: MessageService,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -63,7 +63,8 @@ export class RegisterComponent implements OnInit {
     this.userService.addUser({name: name, email: email, password: password})
       .subscribe(user => {
         if (this.messageService.getExists()) {
-          this.err = this.messageService.getMessage();
+          console.log(this.messageService.getMessage());
+          this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
           this.messageService.setMessage(null);
         } else {
           this.route.navigate(['/login']);

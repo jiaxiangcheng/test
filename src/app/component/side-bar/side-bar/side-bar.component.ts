@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-bar',
@@ -11,11 +12,15 @@ import { Component, OnInit } from '@angular/core';
 export class SideBarComponent implements OnInit {
 
   opened: boolean;
+  active = false;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    if (window.location.pathname === '/teams') {
+      this.active = true;
+    }
   }
-
-
 }

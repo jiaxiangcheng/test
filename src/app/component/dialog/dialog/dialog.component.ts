@@ -6,6 +6,8 @@ import { MessageService } from '../../../services/messages/message.service';
 import { DialogService } from '../../../services/dialog/dialog.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SnackBarService } from '../../../services/snackBar/snack-bar.service';
+
 
 export interface DialogData {
   mode: string;
@@ -77,7 +79,8 @@ export class DialogContentComponent {
     private teamService: TeamsService,
     private messageService: MessageService,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private snackBarService: SnackBarService
   ) {
     this.teamToDelete = this.data.obj;
   }
@@ -97,8 +100,14 @@ export class DialogContentComponent {
       if (mode === 'addTeam') {
         this.teamService.addTeams({name, description})
         .subscribe(team => {
-            this.teamService.teamDataChanged('changed');
-            this.onCancelClick();
+            if (this.messageService.getExists()) {
+              this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+              this.messageService.setMessage(null);
+            } else {
+              this.teamService.teamDataChanged('changed');
+              this.snackBarService.openSnackBar({message: 'Added a new team!', action: 'Ok'});
+              this.onCancelClick();
+            }
         });
       }
       if (mode === 'editTeam') {
@@ -110,8 +119,14 @@ export class DialogContentComponent {
         };
         this.teamService.updateTeam(auxTeam)
         .subscribe(res => {
-           this.teamService.teamDataChanged('changed');
-          this.onCancelClick();
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            this.snackBarService.openSnackBar({message: 'Updated a team!', action: 'Ok'});
+            this.teamService.teamDataChanged('changed');
+            this.onCancelClick();
+          }
         });
       }
     }

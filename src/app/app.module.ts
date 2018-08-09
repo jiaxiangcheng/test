@@ -13,6 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -24,6 +25,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { TopBarComponent } from './component/top-bar/top-bar/top-bar.component';
 import { SideBarComponent } from './component/side-bar/side-bar/side-bar.component';
 import { DialogComponent, DialogContentComponent } from './component/dialog/dialog/dialog.component';
+import { SnackBarComponent } from './component/snackBar/snack-bar/snack-bar.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import { DialogComponent, DialogContentComponent } from './component/dialog/dial
     TopBarComponent,
     SideBarComponent,
     DialogComponent,
-    DialogContentComponent
+    DialogContentComponent,
+    SnackBarComponent
   ],
   entryComponents: [DialogContentComponent],
   imports: [
@@ -51,6 +54,7 @@ import { DialogComponent, DialogContentComponent } from './component/dialog/dial
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {

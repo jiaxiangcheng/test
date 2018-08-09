@@ -6,6 +6,7 @@ import { Location } from '../../../../node_modules/@angular/common';
 import { MessageService } from '../../services/messages/message.service';
 import { Router } from '@angular/router';
 import { DialogService } from '../../services/dialog/dialog.service';
+import { SnackBarService } from '../../services/snackBar/snack-bar.service';
 
 @Component({
   selector: 'app-teams',
@@ -24,14 +25,15 @@ export class TeamsComponent implements OnInit {
     private location: Location,
     private messageService: MessageService,
     private router: Router,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private snackBarService: SnackBarService
   ) { }
 
   ngOnInit() {
     // this.getTeams();
     this.getTeamsPara(1);
-    this.teamService.team$.subscribe(res => {
-      if (res === 'changed') {
+    this.teamService.team$.subscribe(teamTable => {
+      if (teamTable === 'changed') {
         this.getTeamsPara(this.teamService.getCurrentPageNumber());
       }
     });
@@ -47,11 +49,16 @@ export class TeamsComponent implements OnInit {
     this.teamService.setCurrentPageNumber(pageNumber);
     this.teamService.getTeamsPara(this.teamService.getCurrentPageNumber(), this.teamService.getCurrentPageSize())
       .subscribe(res => {
-        this.totalTeams = res.total;
-        const totalPage = Math.ceil(Number(this.totalTeams) / this.teamService.getCurrentPageSize());
-        // console.log('totalpage: ', totalPage);
-        this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
-        this.teams = res.teams;
+        if (this.messageService.getExists()) {
+          this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+          this.messageService.setMessage(null);
+        } else {
+          this.totalTeams = res.total;
+          const totalPage = Math.ceil(Number(this.totalTeams) / this.teamService.getCurrentPageSize());
+          // console.log('totalpage: ', totalPage);
+          this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
+          this.teams = res.teams;
+        }
       });
   }
 
