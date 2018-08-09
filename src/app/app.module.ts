@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -31,7 +32,7 @@ import { SideBarComponent } from './component/side-bar/side-bar/side-bar.compone
     TeamsComponent,
     ModalComponent,
     TopBarComponent,
-    SideBarComponent
+    SideBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +44,7 @@ import { SideBarComponent } from './component/side-bar/side-bar/side-bar.compone
     MatSidenavModule,
     MatCheckboxModule,
     MatToolbarModule,
+    MatDialogModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {
