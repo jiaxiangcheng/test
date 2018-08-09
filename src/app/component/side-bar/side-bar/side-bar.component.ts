@@ -11,16 +11,12 @@ import { Router } from '@angular/router';
 
 export class SideBarComponent implements OnInit {
 
-  opened: boolean;
-  active = false;
 
   constructor(
     private router: Router
   ) { }
 
   ngOnInit() {
-    if (window.location.pathname === '/teams') {
-      this.active = true;
-    }
+
   }
 }

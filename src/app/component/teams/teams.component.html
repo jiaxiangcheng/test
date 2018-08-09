@@ -1,7 +1,7 @@
 <div class="team-content">
     <h1>Team list</h1>
     <div class="ui divider"></div>
-    <div class="table-size-controller" style="text-align: right">
+    <div class="top-controls" style="text-align: right">
       Table size: 
       <select class="ui dropdown" (change)="setPageSize($event)">
         <option value="4">4</option>
@@ -9,6 +9,10 @@
         <option value="8">8</option>
         <option selected="selected">10</option>
       </select>
+      <button class="ui labeled icon blue button" (click)= "openModal({mode: 'addTeam', obj: null})" style="margin-left: 50px;">
+          <i class="add icon"></i>
+          Team
+      </button>
     </div>
     
     <div class="table-content">
@@ -37,11 +41,7 @@
         <tfoot>
           <tr>
             <th colspan="4">
-                <app-dialog></app-dialog>
-                <button class="ui labeled icon blue button" (click)= "openModal({mode: 'addTeam', obj: null})">
-                    <i class="add icon"></i>
-                    Team
-                </button>
+              <app-dialog></app-dialog>
               <div class="ui right floated pagination menu">
                 <a class="icon item">
                   <i class="left chevron icon"></i>

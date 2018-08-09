@@ -7,27 +7,27 @@
                 <label>Username:</label>
                 <input type="text" formControlName="username" style="width: 200px;">
                 <div class= "error-message" *ngIf= "registerForm.get('username').invalid && registerForm.get('username').touched" style="text-align: center">
-                    <div class="ui pointing red label">
-                        3 or more characters!
-                    </div>
+                    <p style="color: red; white-space: nowrap;">
+                    3 or more characters!
+                    </p>
                 </div>        
             </div>
             <div class="field">
                 <label>Email:</label>
                 <input type="text" formControlName="email" style="width: 200px;">
                 <div class= "error-message" *ngIf= "registerForm.get('email').invalid && registerForm.get('email').touched" style="text-align: center">
-                    <div class="ui pointing red label">
+                    <p style="color: red; white-space: nowrap;">
                         Wrong email format!
-                    </div>
+                    </p>
                 </div>
             </div>
             <div class="field">
                 <label>Password:</label>    
                 <input type="password" formControlName="password" style="width: 200px;">
                 <div class= "error-message" *ngIf= "registerForm.get('password').invalid && registerForm.get('password').touched" style="text-align: center">
-                    <div class="ui pointing red label">
+                    <p style="color: red; white-space: nowrap;">
                         7 or more characters!
-                    </div>
+                    </p>
                 </div>
             </div>
             <div class="action-buttons" style="text-align: center">
