@@ -1,71 +1,38 @@
-<!-- <app-jw-modal id="infoModal" >
+<!-->
     <div class="modal" [ngStyle]="getStyle()">
-        <div class="content-panel">
-            <div class="ui icon header">
-                <i class="exclamation icon"></i>
-                Error Message:
-            </div>
-            <div class="content">
-                {{ err?.error }}
-            </div>
-        </div>
-            
-        <div class="actions">
-            <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
-            <i class="checkmark icon"></i>
-            OK
-            </div>
-        </div>
-    </div>
-</app-jw-modal> -->
-
-<app-jw-modal id="infoModal" >
-    <div class="content-panel">
-        <div class="ui icon header">
-            <i class="exclamation icon"></i>
-            Error Message:
-        </div>
-        <div class="content">
-            {{ err?.error }}
-        </div>
-    </div>
+ -->
+ <div class="ui compact segment" id= "form-container">
+    <div class="login-page">
+        <app-dialog></app-dialog>
+        <h1>Login</h1>
+        <div class="form" style="width: 210px;">
+            <form [formGroup]= "loginForm">
+                <div class="field">
+                    <label>Email:</label>
+                    <div class="ui input">
+                        <input type="text" formControlName="email" style="width: 200px;">
+                    </div>
+                    <div class= "error-message" *ngIf= "loginForm.get('email').invalid && loginForm.get('email').touched" style="text-align: center">
+                        <div class="input-err-message" style="text-align: center">
+                            <p style="color: red; white-space: nowrap;">Wrong email format!</p>
+                        </div>
+                    </div>
+                </div>            
         
-    <div class="actions">
-        <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
-        <i class="checkmark icon"></i>
-        OK
+                <div class="field">
+                    <label>Password:</label>
+                    <div class="ui input">
+                        <input type="password" formControlName="password" style="width: 200px;">
+                    </div>
+                    <div class= "error-message" *ngIf= "loginForm.get('password').invalid && loginForm.get('password').touched" style="text-align: center">
+                        <p style="color: red; white-space: nowrap;">7 or more characters!</p>
+                    </div>
+                </div>
+                <div class="login-button">
+                    <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
+                </div>
+            </form>
         </div>
-    </div>
-</app-jw-modal>
-    
-
-<div class="login-page">
-    <h1>Login</h1>
-    <div class="ui form">
-        <form [formGroup]= "loginForm">
-            <div class="field">
-                <label>Email:</label>
-                <input type="text" formControlName="email" style="width: 200px;">
-                <div class= "error-message" *ngIf= "loginForm.get('email').invalid && loginForm.get('email').touched" style="text-align: center">
-                    <div class="ui pointing red label">
-                        Wrong email format!
-                    </div>
-                </div>
-            </div>            
-    
-            <div class="field">
-                <label>Password:</label>
-                <input type="password" formControlName="password" style="width: 200px;">
-                <div class= "error-message" *ngIf= "loginForm.get('password').invalid && loginForm.get('password').touched" style="text-align: center">
-                    <div class="ui pointing red label">
-                        7 or more characters!
-                    </div>
-                </div>
-            </div>
-            <div class="login-button">
-                <button class="ui blue button" (click)="login()" [disabled]="!loginForm.valid">Login</button>
-            </div>
-        </form>
     </div>
 </div>
 

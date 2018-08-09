@@ -10,8 +10,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from '../messages/message.service';
-import { ModalService } from '../modal/modal.service';
-
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -33,7 +31,6 @@ export class AuthService {
     private cookieService: CookieService,
     private router: Router,
     private messageService: MessageService,
-    private modalService: ModalService
   ) { }
 
   login(user): Observable<User> {
@@ -74,15 +71,13 @@ export class AuthService {
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.log('error', error.status);
       if (error.status !== 200) {
         // TODO: send the error to remote logging infrastructure
-        console.error(error);
+        // console.error(error);
         // TODO: better job of transforming error for user consumption
-        console.log(`${operation} failed: ${error.message}`);
+        // console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
-        this.messageService.setMessage(error);
-        this.modalService.open('infoModal');
+        this.messageService.setMessage(error.error);
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);

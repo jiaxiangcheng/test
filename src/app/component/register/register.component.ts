@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { UserService } from '../../services/user/user.service';
 import { MessageService } from '../../services/messages/message.service';
-import { ModalService } from '../../services/modal/modal.service';
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -37,7 +35,6 @@ export class RegisterComponent implements OnInit {
     private route: Router,
     private location: Location,
     private messageService: MessageService,
-    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -67,7 +64,6 @@ export class RegisterComponent implements OnInit {
       .subscribe(user => {
         if (this.messageService.getExists()) {
           this.err = this.messageService.getMessage();
-          this.modalService.open('infoModal');
           this.messageService.setMessage(null);
         } else {
           this.route.navigate(['/login']);
@@ -77,9 +73,4 @@ export class RegisterComponent implements OnInit {
   goBack() {
     this.route.navigate(['/login']);
   }
-
-  closeModal(id) {
-    this.modalService.close(id);
-  }
-
 }

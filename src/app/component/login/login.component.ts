@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder} from '../../../../node_modules/@angular/forms';
-
+import { DialogService } from '../../services/dialog/dialog.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/user/auth.service';
 import { CookieService } from 'ngx-cookie';
 import { UserService } from '../../services/user/user.service';
 import { MessageService } from '../../services/messages/message.service';
-import { ModalService } from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +15,6 @@ import { ModalService } from '../../services/modal/modal.service';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  err: any;
 
   constructor(
     private authService: AuthService,
@@ -24,8 +22,8 @@ export class LoginComponent implements OnInit {
     private cookieService: CookieService,
     private userService: UserService,
     private messageService: MessageService,
-    private modalService: ModalService,
-    private formBService: FormBuilder
+    private formBService: FormBuilder,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -67,8 +65,8 @@ export class LoginComponent implements OnInit {
     this.authService.login({email: email, password: password})
       .subscribe(user => {
         if (this.messageService.getExists()) {
-          this.err = this.messageService.getMessage();
-          this.modalService.open('infoModal');
+          this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+          this.messageService.setMessage(null);
         } else {
           this.authService.setCurrentUser({email, password, token: user.token});
           this.setCookie();
@@ -77,10 +75,5 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/userinfo']);
         }
     });
-  }
-
-  closeModal(id) {
-    this.modalService.close(id);
-    this.messageService.setMessage(null);
   }
 }

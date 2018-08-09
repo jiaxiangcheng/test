@@ -1,0 +1,85 @@
+<div class="content-panel">
+  <!-->Info dialog Content<-->
+  <div class="infoDialog" *ngIf="data.mode === 'infoDialog'" style="text-align: center">
+      <div class="content-panel">
+          <div class="ui icon header">
+            <i class="exclamation icon"></i>
+            Error Message:
+          </div>
+          <div class="content">
+            {{ data.obj }}
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-->Add & Edit Content<-->
+<div class="addEditTeam" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam'">
+  <div class="ui form">
+      <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
+      <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
+      <div class="ui divider"></div>
+      <form [formGroup]="teamForm">
+        <div class="ui field">
+          <label style="text-align: left">
+            Name:
+            <input type="text" formControlName="name">
+          </label>
+        </div>
+        <div class="ui field">
+          <label style="text-align: left">
+            Desciption:
+            <input type="text" formControlName="description">
+          </label>
+        </div>
+      </form>
+    </div>
+</div>
+
+<!-->Delete Content<-->
+<div class="deleteTeam" *ngIf="data.mode === 'deleteTeam'">
+  <div class="content-panel">
+      <div class="ui icon header">
+        <i class="trash icon"></i>
+        Are you sure to delete the team?
+      </div>
+      <div class="content">
+        Team name: <p style="font-weight: bold;">{{ teamToDelete.name }}</p>
+      </div>
+  </div>
+</div>
+  
+
+<div class="ui divider"></div>
+
+<!-->Add & Edit Actions<-->
+<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam'" style="text-align: center; padding-top: 10px;">
+  <div class="ui green basic ok button" (click)="onSaveClick(data.mode)">
+    <i class="add icon"></i>
+    Save
+  </div>
+  <div class="ui red basic cancel button"  (click)="onCancelClick()">
+    <i class="remove icon"></i>
+    Cancel
+  </div>
+</div>
+
+<!-->Delete Actions<-->
+<div class="actions" *ngIf="data.mode === 'deleteTeam'" style="text-align: center; padding-top: 10px;">
+  <div class="ui green basic ok button"  (click)="onDeleteClick()">
+    <i class="checkmark icon"></i>
+    Yes
+  </div>
+  <div class="ui red basic cancel button"  (click)="onCancelClick()">
+    <i class="remove icon"></i>
+    No
+  </div>
+</div>
+
+<!-->infoDialog Actions<-->
+<div class="actions" *ngIf="data.mode === 'infoDialog'" style="text-align: center; padding-top: 10px;">
+    <div class="ui green basic ok button"  (click)="onCancelClick()">
+      <i class="checkmark icon"></i>
+      OK
+    </div>
+</div>

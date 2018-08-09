@@ -1,115 +1,3 @@
-<app-jw-modal id="deleteTeamModal">
-  <div class="content-panel">
-      <div class="ui icon header">
-        <i class="trash icon"></i>
-        Are you sure to delete the team?
-      </div>
-      <div class="content">
-        Team name: <p style="font-weight: bold;">{{ teamToDelete.name }}</p>
-      </div>
-  </div>
-  <div class="actions">
-    <div class="ui green basic ok button"  (click)="closeDeleteModal('deleteTeamModal', 'Yes')">
-      <i class="checkmark icon"></i>
-      Yes
-    </div>
-    <div class="ui red basic cancel button"  (click)="closeDeleteModal('deleteTeamModal', 'No')">
-      <i class="remove icon"></i>
-      No
-    </div>
-  </div>
-</app-jw-modal>
-
-<app-jw-modal id="infoModal">
-    <div class="content-panel">
-        <div class="ui icon header">
-          <i class="exclamation icon"></i>
-          Error Message:
-        </div>
-        <div class="content">
-          {{ err?.error }}
-        </div>
-    </div>
-  
-    <div class="actions">
-      <div class="ui green basic ok button"  (click)="closeModal('infoModal')">
-        <i class="checkmark icon"></i>
-        OK
-      </div>
-    </div>
-</app-jw-modal>
-
-<app-jw-modal id="addTeamModal">
-    <div class="content-panel">
-      <div class="ui form">
-          <h1>Add team:</h1>
-          <div class="ui divider"></div>
-          <form [formGroup]="teamForm">
-            <div class="ui field">
-              <label style="text-align: left">
-                Name:
-                <input type="text" formControlName="name">
-              </label>
-            </div>
-            <div class="ui field">
-              <label style="text-align: left">
-                Desciption:
-                <input type="text" formControlName="description">
-              </label>
-            </div>
-          </form>
-        </div>
-    </div>
-  
-    <div class="actions">
-      <div class="ui green basic ok button" (click)="addTeam()">
-        <i class="add icon"></i>
-        Save
-      </div>
-      <div class="ui red basic cancel button"  (click)="closeModal('addTeamModal')">
-        <i class="remove icon"></i>
-        Cancel
-      </div>
-    </div>
-</app-jw-modal>
-
-<app-jw-modal id="editTeamModal">
-    <div class="content-panel">
-      <div class="ui form">
-          <h1>Team to be update: <span style="color: red">{{ teamToUpdate?.name }}</span></h1>
-          <div class="ui divider"></div>
-          <div class="form">
-              <form [formGroup] = "updateTeamForm">
-                  <div class="ui field">
-                      <label style="text-align: left">
-                          Name:
-                          <input type="text" formControlName="name">
-                        </label>
-                  </div>
-                  <div class="ui field">
-                      <label style="text-align: left">
-                        Desciption:
-                        <input type="text" formControlName="description">
-                      </label>
-                    </div>
-              </form>
-          </div>
-        </div>
-    </div>
-  
-    <div class="actions">
-      <div class="ui green basic ok button" (click)= "updateTeam()">
-        <i class="sync icon"></i>
-        Update
-      </div>
-      <div class="ui red basic cancel button"  (click)="closeModal('editTeamModal')">
-        <i class="remove icon"></i>
-        Cancel
-      </div>
-    </div>
-</app-jw-modal>
-
-
 <h1>Team list</h1>
 <div class="ui divider"></div>
 <div class="table-size-controller" style="text-align: right">
@@ -136,10 +24,10 @@
         <td style="display: none">{{ team._id }}</td>
         <td>{{ team.name }}</td>
         <td>{{ team.description }}</td>
-        <td style="text-align: center"><button class="ui icon button" (click)="openDeleteModal('deleteTeamModal', team)">
+        <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'deleteTeam', obj: team})">
           <i class="trash icon"></i>
         </button></td>
-        <td style="text-align: center"><button class="ui icon button" (click)="openEditModal('editTeamModal', team)">
+        <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'editTeam', obj: team})">
           <i class="edit icon"></i>
         </button></td>
       </tr>
@@ -147,7 +35,8 @@
     <tfoot>
       <tr>
         <th colspan="4">
-            <button class="ui labeled icon blue button" (click)= "openModal('addTeamModal')">
+            <app-dialog></app-dialog>
+            <button class="ui labeled icon blue button" (click)= "openModal({mode: 'addTeam', obj: null})">
                 <i class="add icon"></i>
                 Team
             </button>

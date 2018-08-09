@@ -10,22 +10,14 @@ import { SidebarService } from '../../../services/sidebar/sidebar-service.servic
 })
 export class TopBarComponent implements OnInit {
 
-  logged;
-  email;
+  logged = localStorage.getItem('token');
+  email = localStorage.getItem('email');
   sidebarOpened = false;
   constructor (
     private authService: AuthService,
     private userService: UserService,
     private sidebarService: SidebarService
     ) {
-
-    // 可以从任何组件来订阅user$，来获取改变的值
-    this.userService.user$.subscribe(r => {
-      if (r === 'loginSuccess') {
-        this.logged = localStorage.getItem('token');
-        this.email = localStorage.getItem('email');
-      }
-    });
   }
 
   logout() {
@@ -34,6 +26,13 @@ export class TopBarComponent implements OnInit {
   }
 
   ngOnInit() {
+    // 可以从任何组件来订阅user$，来获取改变的值
+    this.userService.user$.subscribe(r => {
+      if (r === 'loginSuccess') {
+        this.logged = localStorage.getItem('token');
+        this.email = localStorage.getItem('email');
+      }
+    });
   }
 
   toggle() {

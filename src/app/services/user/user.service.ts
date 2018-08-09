@@ -1,5 +1,4 @@
 import { MessageService } from '../../services/messages/message.service';
-import { ModalService } from '../../services/modal/modal.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, of} from 'rxjs';
 import { User } from '../../model/user';
