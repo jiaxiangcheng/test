@@ -23,7 +23,7 @@
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <div class="ui divider"></div>
-      <form [formGroup]="Form" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification'">
+      <form [formGroup]="Form" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'">
         <div class="ui field">
           <label style="text-align: left">
             Name:
@@ -48,7 +48,7 @@
         </div>
       </form>
 
-      <form [formGroup]="Form2" *ngIf="data.mode === 'addGame'">
+      <form [formGroup]="Form2" *ngIf="data.mode === 'addGame' || data.mode === 'editGame'">
           <div class="ui field">
             <label style="text-align: left">
               Name:
