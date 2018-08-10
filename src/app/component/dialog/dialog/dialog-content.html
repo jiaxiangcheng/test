@@ -14,11 +14,12 @@
 </div>
 
 <!-->Add & Edit Content<-->
-<div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification'">
+<div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'">
   <div class="ui form">
       <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
       <h1 *ngIf="data.mode === 'addClassification'" >Add Classification:</h1>
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
+      <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <div class="ui divider"></div>
       <form [formGroup]="Form">
         <div class="ui field">
@@ -58,7 +59,8 @@
 <div class="ui divider"></div>
 
 <!-->Add & Edit Actions<-->
-<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification'" style="text-align: center; padding-top: 10px;">
+<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'" 
+style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button" (click)="onSaveClick(data.mode)">
     <i class="add icon"></i>
     Save

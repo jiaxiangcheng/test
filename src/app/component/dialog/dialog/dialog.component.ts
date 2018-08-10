@@ -48,6 +48,8 @@ export class DialogComponent implements OnInit, OnDestroy {
           this.openDialog(mode);
         } else if (mode.mode === 'deleteClassification') {
           this.openDialog(mode);
+        } else if (mode.mode === 'editClassification') {
+          this.openDialog(mode);
         }
       })
     );
@@ -111,7 +113,7 @@ export class DialogContentComponent {
               this.messageService.setMessage(null);
             } else {
               this.teamService.teamDataChanged('changed');
-              this.snackBarService.openSnackBar({message: 'Added a new team!', action: 'Ok'});
+              this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
               this.onCancelClick();
             }
         });
@@ -129,7 +131,7 @@ export class DialogContentComponent {
             this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
             this.messageService.setMessage(null);
           } else {
-            this.snackBarService.openSnackBar({message: 'Updated a team!', action: 'Ok'});
+            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
             this.teamService.teamDataChanged('changed');
             this.onCancelClick();
           }
@@ -147,9 +149,28 @@ export class DialogContentComponent {
               this.messageService.setMessage(null);
             } else {
               // this.teamService.teamDataChanged('changed');  CANIVARRRRRRRR
-              this.snackBarService.openSnackBar({message: 'Added a new classification!', action: 'Ok'});
+              this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
               this.onCancelClick();
             }
+        });
+      }
+      if (mode === 'editClassification') {
+        const classificationToUpdate = this.data.obj;
+        const auxClass = {
+          _id: classificationToUpdate._id,
+          name: this.Form.value.name,
+          description: this.Form.value.description
+        };
+        this.classificationsService.updateClassification(auxClass)
+        .subscribe(res => {
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
+            // this.teamService.teamDataChanged('changed');
+            this.onCancelClick();
+          }
         });
       }
     }
