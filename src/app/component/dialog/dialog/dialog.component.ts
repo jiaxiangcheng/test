@@ -4,10 +4,11 @@ import { FormGroup, FormControl, Validators } from '../../../../../node_modules/
 import { TeamsService } from '../../../services/teams/teams.service';
 import { MessageService } from '../../../services/messages/message.service';
 import { DialogService } from '../../../services/dialog/dialog.service';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SnackBarService } from '../../../services/snackBar/snack-bar.service';
 import { ClassificationsService } from '../../../services/classifications/classifications.service';
+import { Classification } from '../../../model/classification';
+import { GamesService } from '../../../services/games/games.service';
 
 // 为了在dialog-content能够acces
 export interface DialogData {
@@ -38,17 +39,32 @@ export class DialogComponent implements OnInit, OnDestroy {
         // mode 传过来的时候是个obj {mode: 他的action类别, obj: optional的，可以选择传过来任何一个obj如果需要的话}
         if (mode.mode === 'addTeam') {
           this.openDialog(mode);
-        } else if (mode.mode === 'editTeam') {
+        }
+        if (mode.mode === 'editTeam') {
           this.openDialog(mode);
-        } else if (mode.mode === 'deleteTeam') {
+        }
+        if (mode.mode === 'deleteTeam') {
           this.openDialog(mode);
-        } else if (mode.mode === 'infoDialog') {
+        }
+        if (mode.mode === 'infoDialog') {
           this.openDialog(mode);
-        } else if (mode.mode === 'addClassification') {
+        }
+        if (mode.mode === 'addClassification') {
           this.openDialog(mode);
-        } else if (mode.mode === 'deleteClassification') {
+        }
+        if (mode.mode === 'deleteClassification') {
           this.openDialog(mode);
-        } else if (mode.mode === 'editClassification') {
+        }
+        if (mode.mode === 'editClassification') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'addGame') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'editGame') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'deleteGame') {
           this.openDialog(mode);
         }
       })
@@ -75,28 +91,48 @@ export class DialogComponent implements OnInit, OnDestroy {
   selector: 'app-dialog-content',
   templateUrl: './dialog-content.html',
 })
-export class DialogContentComponent {
+export class DialogContentComponent implements OnInit {
 
-  teamToDelete;
-  classificationToDelete;
+    subscriptions: Array<Subscription> = [];      // 为了推出component的时候取消订阅，要不然再次进来的时候回再次订阅就会变成订阅两次
+    classifications: Array<Classification> = [];
 
-  constructor(
-    public dialogRef: MatDialogRef<DialogContentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private teamService: TeamsService,
-    private messageService: MessageService,
-    private dialogService: DialogService,
-    private snackBarService: SnackBarService,
-    private classificationsService: ClassificationsService
-  ) {
-    this.teamToDelete = this.data.obj;
-    this.classificationToDelete = this.data.obj;
-  }
+    gameToDelete;
+    teamToDelete;
+    classificationToDelete;
 
     Form = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3)
+      ]),
+      description: new FormControl('', Validators.required)
+    });
+
+    Form2 = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required)
     });
+    constructor(
+      public dialogRef: MatDialogRef<DialogContentComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: DialogData,
+      private teamService: TeamsService,
+      private messageService: MessageService,
+      private dialogService: DialogService,
+      private snackBarService: SnackBarService,
+      private classificationsService: ClassificationsService,
+      private gamesService: GamesService
+    ) {
+      this.gameToDelete = this.data.obj;
+      this.teamToDelete = this.data.obj;
+      this.classificationToDelete = this.data.obj;
+    }
+
+    ngOnInit() {
+      this.classificationsService.getClassification()
+      .subscribe(res => {
+        this.classifications = res;
+      });
+    }
 
     onCancelClick(): void {
       this.dialogRef.close();
@@ -141,7 +177,6 @@ export class DialogContentComponent {
       if (mode === 'addClassification') {
         const classificationName = this.Form.value.name;
         const classificationDescription = this.Form.value.description;
-        console.log('name', classificationName);
         this.classificationsService.addClassification({name: classificationName, description: classificationDescription})
         .subscribe(classification => {
             if (this.messageService.getExists()) {
@@ -173,6 +208,25 @@ export class DialogContentComponent {
           }
         });
       }
+      if (mode === 'addGame') {
+        const gameName = this.Form2.value.name;
+        const classification = this.Form2.value.classification;
+        const auxGame = {
+          name: gameName,
+          classification: classification
+        };
+        this.gamesService.addGames(auxGame)
+          .subscribe(res => {
+            if (this.messageService.getExists()) {
+              this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+              this.messageService.setMessage(null);
+            } else {
+              // this.teamService.teamDataChanged('changed');  CANIVARRRRRRRR
+              this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
+              this.onCancelClick();
+            }
+          });
+      }
     }
 
     onDeleteClick(mode) {
@@ -190,6 +244,18 @@ export class DialogContentComponent {
       }
       if (mode === 'deleteClassification') {
         this.classificationsService.deleteClassification(this.classificationToDelete)
+        .subscribe(res => {
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            // this.classificationsService.teamDataChanged('changed');
+            this.onCancelClick();
+          }
+        });
+      }
+      if (mode === 'deleteGame') {
+        this.gamesService.deleteGame(this.gameToDelete)
         .subscribe(res => {
           if (this.messageService.getExists()) {
             this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});

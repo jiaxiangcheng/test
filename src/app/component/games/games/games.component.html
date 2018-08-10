@@ -9,7 +9,7 @@
         <option value="8">8</option>
         <option selected="selected">10</option>
       </select>
-      <button class="ui labeled icon button" (click)= "openModal({mode: 'addgame', obj: null})" style="margin-left: 50px;">
+      <button class="ui labeled icon button" (click)= "openModal({mode: 'addGame', obj: null})" style="margin-left: 50px;">
           <i class="add icon"></i>
           Add
       </button>
@@ -29,7 +29,7 @@
           <tr *ngFor="let game of games">
             <td style="display: none">{{ game._id }}</td>
             <td>{{ game.name }}</td>
-            <td>{{ game.description }}</td>
+            <td>{{ game.classification }}</td>
             <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'deleteGame', obj: game})">
               <i class="trash icon"></i>
             </button></td>

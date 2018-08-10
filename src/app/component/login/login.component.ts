@@ -39,13 +39,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  setCookie() {
-    const user = this.authService.getCurrentUser();
-    const authToken = user.token;
-    this.cookieService.put('token', authToken);
-
-    localStorage.setItem('token', authToken);
-    localStorage.setItem('email', user.email);
+  setCookie(email, password, token) {
+    this.cookieService.put('token', token);
+    localStorage.setItem('token', token);
+    localStorage.setItem('email', email);
   }
   getCookie(key) {
     return this.cookieService.get(key);
@@ -68,8 +65,7 @@ export class LoginComponent implements OnInit {
           this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
           this.messageService.setMessage(null);
         } else {
-          this.authService.setCurrentUser({email, password, token: user.token});
-          this.setCookie();
+          this.setCookie(email, password, user.token);
           // 呼叫userService的方法，让订阅者们收到新的值
           this.userService.changeUserStatus('loginSuccess');
           this.router.navigate(['/userinfo']);

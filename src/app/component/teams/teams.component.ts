@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/team';
 import { TeamsService } from '../../services/teams/teams.service';
-import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
 import { Location } from '../../../../node_modules/@angular/common';
 import { MessageService } from '../../services/messages/message.service';
-import { Router } from '@angular/router';
 import { DialogService } from '../../services/dialog/dialog.service';
-import { SnackBarService } from '../../services/snackBar/snack-bar.service';
 
 @Component({
   selector: 'app-teams',
@@ -24,9 +21,7 @@ export class TeamsComponent implements OnInit {
     private teamService: TeamsService,
     private location: Location,
     private messageService: MessageService,
-    private router: Router,
     private dialogService: DialogService,
-    private snackBarService: SnackBarService
   ) { }
 
   ngOnInit() {

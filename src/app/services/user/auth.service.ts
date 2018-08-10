@@ -24,7 +24,6 @@ const httpOptions = {
 export class AuthService {
 
   private authrUrl = 'https://qtdas-admin.herokuapp.com/api/auth';
-  private currentUser: User;
   constructor(
     private http: HttpClient,
     public jwtHelper: JwtHelperService,
@@ -46,14 +45,6 @@ export class AuthService {
     this.cookieService.remove('token');
     localStorage.clear();
     this.router.navigate(['/login']);
-  }
-
-  setCurrentUser(user) {
-    this.currentUser = user;
-  }
-
-  getCurrentUser() {
-    return this.currentUser;
   }
 
   public isAuthenticated(): boolean {

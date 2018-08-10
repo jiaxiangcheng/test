@@ -19,6 +19,7 @@ export class GamesService {
       'X-Auth-Token': this.token
     })
   };
+
   constructor(
     private http: HttpClient,
     private cookieService: CookieService,
@@ -29,5 +30,42 @@ export class GamesService {
 
   getGames(): Observable<any> {
     return this.http.get<any>(this.gamesUrl, this.httpOptions);
+  }
+
+  addGames(game): Observable<Game> {
+    return this.http.post<Game>(this.gamesUrl, game, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Game>('creategame')),
+        tap(resp => console.log('creategame', resp))
+      );
+  }
+
+  deleteGame(game): Observable<Game> {
+    return this.http.delete<Game>(`${this.gamesUrl}/${game._id}`, this.httpOptions).pipe(
+      catchError(this.handleError<Game>('deleteGame')),
+      tap(_ => console.log(`deleted Game id=${game._id}`)
+    ));
+  }
+
+  updateGame(game): Observable<any> {
+    return this.http.put(`${this.gamesUrl}/${game._id}`, {name: game.name, description: game.description},  this.httpOptions).pipe(
+      catchError(this.handleError<Game>('updategame')),
+      tap(_ => console.log(`updated game id=${game._id}`)
+    ));
+  }
+
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      if (error.status !== 200) {
+        // TODO: send the error to remote logging infrastructure
+        // console.error(error);
+        // TODO: better job of transforming error for user consumption
+        // console.log(`${operation} failed: ${error.message}`);
+        // Catch the status code and do some actions if it is a particular situation
+        this.messageService.setMessage(error.error);
+      }
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 }
