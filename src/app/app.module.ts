@@ -26,6 +26,7 @@ import { TopBarComponent } from './component/top-bar/top-bar/top-bar.component';
 import { SideBarComponent } from './component/side-bar/side-bar/side-bar.component';
 import { DialogComponent, DialogContentComponent } from './component/dialog/dialog/dialog.component';
 import { SnackBarComponent } from './component/snackBar/snack-bar/snack-bar.component';
+import { ClassificationsComponent } from './component/classifications/classifications/classifications.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SnackBarComponent } from './component/snackBar/snack-bar/snack-bar.comp
     SideBarComponent,
     DialogComponent,
     DialogContentComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    ClassificationsComponent
   ],
   entryComponents: [DialogContentComponent],
   imports: [

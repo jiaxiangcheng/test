@@ -62,8 +62,7 @@ export class AuthService {
     if (token) {
       // Check whether the token is expired and return
       // true or false
-      // return !this.jwtHelper.isTokenExpired(token);
-      return true;
+       return !this.jwtHelper.isTokenExpired(token);
     } else {
       return false;
     }
