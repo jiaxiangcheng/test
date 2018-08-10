@@ -4,6 +4,7 @@ import { DialogService } from '../../../services/dialog/dialog.service';
 import { MessageService } from '../../../services/messages/message.service';
 import { Game } from '../../../model/game';
 import { Location } from '../../../../../node_modules/@angular/common';
+import { Router } from '../../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-games',
@@ -19,6 +20,7 @@ export class GamesComponent implements OnInit {
     private dialogService: DialogService,
     private messageService: MessageService,
     private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -41,6 +43,6 @@ export class GamesComponent implements OnInit {
     this.dialogService.openDialog(mode);
   }
   goBack() {
-    this.location.back();
+    this.router.navigate(['/userinfo']);
   }
 }

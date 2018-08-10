@@ -4,6 +4,7 @@ import { TeamsService } from '../../services/teams/teams.service';
 import { Location } from '../../../../node_modules/@angular/common';
 import { MessageService } from '../../services/messages/message.service';
 import { DialogService } from '../../services/dialog/dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -22,6 +23,7 @@ export class TeamsComponent implements OnInit {
     private location: Location,
     private messageService: MessageService,
     private dialogService: DialogService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -58,7 +60,7 @@ export class TeamsComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/userinfo']);
   }
 
   openModal(mode) {
