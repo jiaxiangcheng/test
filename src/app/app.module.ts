@@ -27,6 +27,7 @@ import { SideBarComponent } from './component/side-bar/side-bar/side-bar.compone
 import { DialogComponent, DialogContentComponent } from './component/dialog/dialog/dialog.component';
 import { SnackBarComponent } from './component/snackBar/snack-bar/snack-bar.component';
 import { ClassificationsComponent } from './component/classifications/classifications/classifications.component';
+import { GamesComponent } from './component/games/games/games.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ClassificationsComponent } from './component/classifications/classifica
     DialogComponent,
     DialogContentComponent,
     SnackBarComponent,
-    ClassificationsComponent
+    ClassificationsComponent,
+    GamesComponent
   ],
   entryComponents: [DialogContentComponent],
   imports: [

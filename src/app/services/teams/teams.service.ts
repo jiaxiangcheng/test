@@ -14,7 +14,6 @@ import { DialogService } from '../../services/dialog/dialog.service';
 export class TeamsService {
   private token = this.cookieService.get('token');
   private teamsUrl = 'https://qtdas-admin.herokuapp.com/api/teams';
-  private teamToUpdate: Team;
   private currentPagesize = 10;         // default pagesize is 10
   private currentPageNumber = 1;              // default pageNumber is 1
 
@@ -34,15 +33,6 @@ export class TeamsService {
     private messageService: MessageService,
     private dialogService: DialogService
   ) { }
-
-  setTeamToUpdate(team) {
-    this.teamToUpdate = team;
-  }
-
-  getTeamToUpdate(): Team {
-    return this.teamToUpdate;
-  }
-
 
   getTeams(): Observable<any> {
     return this.http.get<any>(this.teamsUrl, this.httpOptions);

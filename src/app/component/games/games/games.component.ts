@@ -1,38 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { Classification } from '../../../model/classification';
-import { ClassificationsService } from '../../../services/classifications/classifications.service';
+import { GamesService } from '../../../services/games/games.service';
 import { DialogService } from '../../../services/dialog/dialog.service';
 import { MessageService } from '../../../services/messages/message.service';
+import { Game } from '../../../model/game';
 import { Location } from '../../../../../node_modules/@angular/common';
 
 @Component({
-  selector: 'app-classifications',
-  templateUrl: './classifications.component.html',
-  styleUrls: ['./classifications.component.scss']
+  selector: 'app-games',
+  templateUrl: './games.component.html',
+  styleUrls: ['./games.component.scss']
 })
-export class ClassificationsComponent implements OnInit {
+export class GamesComponent implements OnInit {
 
-  classifications: Array<Classification> = [];
+  games: Array<Game> = [];
 
   constructor(
-    private classificationsService: ClassificationsService,
+    private gamesService: GamesService,
     private dialogService: DialogService,
     private messageService: MessageService,
     private location: Location,
   ) { }
 
   ngOnInit() {
-    this.getClassifications();
+    this.getGames();
   }
 
-  getClassifications() {
-    return this.classificationsService.getClassification()
+  getGames() {
+    return this.gamesService.getGames()
     .subscribe(res => {
       if (this.messageService.getExists()) {
         this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
         this.messageService.setMessage(null);
       } else {
-        this.classifications = res;
+        this.games = res;
       }
     });
   }
