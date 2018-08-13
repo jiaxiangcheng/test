@@ -13,6 +13,10 @@ import { Classification } from '../../model/classification';
 export class ClassificationsService {
   private token = this.cookieService.get('token');
   private classificationsUrl = 'https://qtdas-admin.herokuapp.com/api/classifications';
+  private currentPagesize = 10;         // default pagesize is 10
+  private currentPageNumber = 1;              // default pageNumber is 1
+  private classificationSubject = new Subject<any>(); // 发送器，通知有变化
+  classification$ = this.classificationSubject.asObservable();    // 数据储存的地方， 可以被subscribe()然后就可以获取数据
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -27,8 +31,26 @@ export class ClassificationsService {
     private dialogService: DialogService
   ) { }
 
-  getClassification(): Observable<any> {
-    return this.http.get<any>(this.classificationsUrl, this.httpOptions);
+  // getClassification(): Observable<any> {
+  //   return this.http.get<any>(this.classificationsUrl, this.httpOptions);
+  // }
+
+  getClassificationsPara(pageNumber, pageSize): Observable<any> {
+    this.currentPagesize = pageSize;
+    return this.http.get<any>(`${this.classificationsUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
+  setCurrentPageSize(num) {
+    this.currentPagesize = num;
+  }
+  getCurrentPageSize() {
+    return this.currentPagesize;
+  }
+  setCurrentPageNumber(num) {
+    this.currentPageNumber = num;
+  }
+  getCurrentPageNumber() {
+    return this.currentPageNumber;
   }
 
   addClassification(classification): Observable<any> {
@@ -69,4 +91,7 @@ export class ClassificationsService {
     };
   }
 
+  classificationDataChanged(mode) {
+    this.classificationSubject.next(mode);  // emit有变化，并且传送新的value
+  }
 }

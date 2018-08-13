@@ -128,10 +128,7 @@ export class DialogContentComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.classificationsService.getClassification()
-      .subscribe(res => {
-        this.classifications = res;
-      });
+
     }
 
     onCancelClick(): void {
@@ -183,7 +180,7 @@ export class DialogContentComponent implements OnInit {
               this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
               this.messageService.setMessage(null);
             } else {
-              // this.teamService.teamDataChanged('changed');  CANIVARRRRRRRR
+              this.classificationsService.classificationDataChanged('changed');
               this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
               this.onCancelClick();
             }
@@ -203,7 +200,7 @@ export class DialogContentComponent implements OnInit {
             this.messageService.setMessage(null);
           } else {
             this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
-            // this.teamService.teamDataChanged('changed');
+            this.classificationsService.classificationDataChanged('changed');
             this.onCancelClick();
           }
         });
@@ -249,7 +246,7 @@ export class DialogContentComponent implements OnInit {
             this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
             this.messageService.setMessage(null);
           } else {
-            // this.classificationsService.teamDataChanged('changed');
+            this.classificationsService.classificationDataChanged('changed');
             this.onCancelClick();
           }
         });
