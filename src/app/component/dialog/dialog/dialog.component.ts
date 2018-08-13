@@ -9,7 +9,9 @@ import { SnackBarService } from '../../../services/snackBar/snack-bar.service';
 import { ClassificationsService } from '../../../services/classifications/classifications.service';
 import { Classification } from '../../../model/classification';
 import { GamesService } from '../../../services/games/games.service';
-import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { CountryService } from '../../../services/country/country.service';
+import { IndividualService } from '../../../services/individual/individual.service';
 
 // 为了在dialog-content能够acces
 export interface DialogData {
@@ -68,6 +70,9 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (mode.mode === 'deleteGame') {
           this.openDialog(mode);
         }
+        if (mode.mode === 'addIndividual') {
+          this.openDialog(mode);
+        }
       })
     );
   }
@@ -96,13 +101,14 @@ export class DialogContentComponent implements OnInit {
 
     subscriptions: Array<Subscription> = [];      // 为了推出component的时候取消订阅，要不然再次进来的时候回再次订阅就会变成订阅两次
     classifications: Array<Classification> = [];
+    countries: Array<any> = [];
 
     gameToDelete;
     teamToDelete;
     classificationToDelete;
     startDate;
     endDate;
-    Form = new FormGroup({
+    classificationForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(3)
@@ -110,13 +116,13 @@ export class DialogContentComponent implements OnInit {
       description: new FormControl('', Validators.required)
     });
 
-    Form2 = new FormGroup({
+    gameForm = new FormGroup({
       name: new FormControl('', Validators.required),
       classification: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required)
     });
 
-    Form3 = new FormGroup({
+    teamForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(3)
@@ -133,7 +139,9 @@ export class DialogContentComponent implements OnInit {
       private dialogService: DialogService,
       private snackBarService: SnackBarService,
       private classificationsService: ClassificationsService,
-      private gamesService: GamesService
+      private gamesService: GamesService,
+      private countryService: CountryService,
+      private individualService: IndividualService
     ) {
       this.gameToDelete = this.data.obj;
       this.teamToDelete = this.data.obj;
@@ -145,11 +153,14 @@ export class DialogContentComponent implements OnInit {
       .subscribe(res => {
         this.classifications = res.classifications;
       });
+      this.countryService.getCountries().subscribe(res => {
+        this.countries = res;
+      });
     }
 
     addDate(type: string, event: MatDatepickerInputEvent<Date>) {
       let date = new Date();
-      date = this.Form2.value.date;
+      date = this.gameForm.value.date;
       if (type === 'start') {
         this.startDate = date.getTime() / 1000 + '';
          console.log(this.startDate);
@@ -173,9 +184,9 @@ export class DialogContentComponent implements OnInit {
     }
 
     onSaveClick(mode): void {
-      const teamName = this.Form3.value.name;
-      const teamDescription = this.Form3.value.description;
-      const teamCountry = this.Form3.value.country;
+      const teamName = this.teamForm.value.name;
+      const teamDescription = this.teamForm.value.description;
+      const teamCountry = this.teamForm.value.country;
       if (mode === 'addTeam') {
         this.teamService.addTeams({name: teamName, description: teamDescription, country: teamCountry})
         .subscribe(team => {
@@ -193,9 +204,9 @@ export class DialogContentComponent implements OnInit {
         const teamToUpdate = this.data.obj;
         const auxTeam = {
           _id: teamToUpdate._id,
-          name: this.Form3.value.name,
-          description: this.Form3.value.description,
-          country: this.Form3.value.country
+          name: this.teamForm.value.name,
+          description: this.teamForm.value.description,
+          country: this.teamForm.value.country
         };
         this.teamService.updateTeam(auxTeam)
         .subscribe(res => {
@@ -211,8 +222,8 @@ export class DialogContentComponent implements OnInit {
       }
 
       if (mode === 'addClassification') {
-        const classificationName = this.Form.value.name;
-        const classificationDescription = this.Form.value.description;
+        const classificationName = this.classificationForm.value.name;
+        const classificationDescription = this.classificationForm.value.description;
         this.classificationsService.addClassification({name: classificationName, description: classificationDescription})
         .subscribe(classification => {
             if (this.messageService.getExists()) {
@@ -229,8 +240,8 @@ export class DialogContentComponent implements OnInit {
         const classificationToUpdate = this.data.obj;
         const auxClass = {
           _id: classificationToUpdate._id,
-          name: this.Form.value.name,
-          description: this.Form.value.description
+          name: this.classificationForm.value.name,
+          description: this.classificationForm.value.description
         };
         this.classificationsService.updateClassification(auxClass)
         .subscribe(res => {
@@ -245,8 +256,8 @@ export class DialogContentComponent implements OnInit {
         });
       }
       if (mode === 'addGame') {
-        const gameName = this.Form2.value.name;
-        const classificationID = this.Form2.value.classification;
+        const gameName = this.gameForm.value.name;
+        const classificationID = this.gameForm.value.classification;
         const auxGame = {
           name: gameName,
           classification: classificationID,
@@ -264,6 +275,23 @@ export class DialogContentComponent implements OnInit {
               this.onCancelClick();
             }
           });
+      }
+      if (mode === 'addIndividual') {
+        // Teamform is used for team and individual
+        const individualName = this.teamForm.value.name;
+        const individualDescription = this.teamForm.value.description;
+        const individualCountry = this.teamForm.value.country;
+        this.individualService.addIndividual({name: individualName, description: individualDescription, country: individualCountry})
+        .subscribe(individual => {
+            if (this.messageService.getExists()) {
+              this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+              this.messageService.setMessage(null);
+            } else {
+              this.individualService.individualDataChanged('changed');
+              this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
+              this.onCancelClick();
+            }
+        });
       }
     }
 

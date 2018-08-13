@@ -7,6 +7,7 @@ import { TeamsComponent } from './component/teams/teams.component';
 import { AuthGuardService as AuthGuard } from './services/guard/auth-guard.service';
 import { ClassificationsComponent } from './component/classifications/classifications/classifications.component';
 import { GamesComponent } from './component/games/games/games.component';
+import { IndividualsComponent } from './component/individuals/individuals/individuals.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'userinfo', component: UserInfoComponent, canActivate: [AuthGuard] },
   { path: 'teams', component: TeamsComponent, canActivate: [AuthGuard] },
   { path: 'classifications', component: ClassificationsComponent, canActivate: [AuthGuard]},
-  { path: 'games', component: GamesComponent, canActivate: [AuthGuard]}
+  { path: 'games', component: GamesComponent, canActivate: [AuthGuard]},
+  { path: 'individuals', component: IndividualsComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

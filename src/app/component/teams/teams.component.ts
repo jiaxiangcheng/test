@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../../model/team';
 import { TeamsService } from '../../services/teams/teams.service';
-import { Location } from '../../../../node_modules/@angular/common';
 import { MessageService } from '../../services/messages/message.service';
 import { DialogService } from '../../services/dialog/dialog.service';
 import { Router } from '@angular/router';
@@ -20,7 +19,6 @@ export class TeamsComponent implements OnInit {
 
   constructor(
     private teamService: TeamsService,
-    private location: Location,
     private messageService: MessageService,
     private dialogService: DialogService,
     private router: Router

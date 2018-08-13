@@ -14,8 +14,8 @@ export class AppComponent implements OnInit {
   constructor(
     private sidebarService: SidebarService
   ) {
-    this.sidebarService.opened$.subscribe(r => {
-      if (r === 'open') {
+    this.sidebarService.opened$.subscribe(status => {
+      if (status === 'open') {
         this.opened = true;
       } else {
         this.opened = false;

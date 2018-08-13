@@ -15,22 +15,23 @@
 
 <!-->Add & Edit Content<-->
 <div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
-|| data.mode === 'addGame'">
+|| data.mode === 'addGame' || data.mode === 'addIndividual'">
   <div class="ui form">
       <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
       <h1 *ngIf="data.mode === 'addClassification'" >Add Classification:</h1>
       <h1 *ngIf="data.mode === 'addGame'" >Add game:</h1>
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
+      <h1 *ngIf="data.mode === 'addIndividual'" >Add individual:</h1>
       <div class="ui divider"></div>
       
-      <form [formGroup]="Form" *ngIf="data.mode === 'addClassification' || data.mode === 'editClassification'">
+      <form [formGroup]="classificationForm" *ngIf="data.mode === 'addClassification' || data.mode === 'editClassification'">
         <div class="ui field">
           <label style="text-align: left">
             Name:
             <input type="text" formControlName="name">
           </label>
-          <div class= "error-message" *ngIf= "Form.get('name').invalid && Form.get('name').touched" style="text-align: center">
+          <div class= "error-message" *ngIf= "classificationForm.get('name').invalid && classificationForm.get('name').touched" style="text-align: center">
               <div class="input-err-message" style="text-align: center">
                   <p style="color: red; white-space: nowrap;">Must be at least 3 characters!</p>
               </div>
@@ -41,7 +42,7 @@
             Desciption:
             <input type="text" formControlName="description">
           </label>
-          <div class= "error-message" *ngIf= "Form.get('description').invalid && Form.get('description').touched" style="text-align: center">
+          <div class= "error-message" *ngIf= "classificationForm.get('description').invalid && classificationForm.get('description').touched" style="text-align: center">
               <div class="input-err-message" style="text-align: center">
                   <p style="color: red; white-space: nowrap;">Can't be empty!</p>
               </div>
@@ -49,13 +50,13 @@
         </div>
       </form>
 
-      <form [formGroup]="Form3" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam'">
+      <form [formGroup]="teamForm" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addIndividual' || data.mode === 'editIndividual'">
           <div class="ui field">
             <label style="text-align: left">
               Name:
               <input type="text" formControlName="name">
             </label>
-            <div class= "error-message" *ngIf= "Form3.get('name').invalid && Form3.get('name').touched" style="text-align: center">
+            <div class= "error-message" *ngIf= "teamForm.get('name').invalid && teamForm.get('name').touched" style="text-align: center">
                 <div class="input-err-message" style="text-align: center">
                     <p style="color: red; white-space: nowrap;">Must be at least 3 characters!</p>
                 </div>
@@ -66,16 +67,18 @@
               Desciption:
               <input type="text" formControlName="description">
             </label>
-            <div class= "error-message" *ngIf= "Form3.get('description').invalid && Form3.get('description').touched" style="text-align: center">
+            <div class= "error-message" *ngIf= "teamForm.get('description').invalid && teamForm.get('description').touched" style="text-align: center">
                 <div class="input-err-message" style="text-align: center">
                     <p style="color: red; white-space: nowrap;">Can't be empty!</p>
                 </div>
             </div>
             <label style="text-align: left">
                 Country:
-                <input type="text" formControlName="country">
+                <select class="ui dropdown" formControlName="country" >
+                    <option *ngFor="let country of countries" value="{{country.iso3}}">{{ country.name }}</option>
+                </select>
               </label>
-              <div class= "error-message" *ngIf= "Form3.get('country').invalid && Form3.get('country').touched" style="text-align: center">
+              <div class= "error-message" *ngIf= "teamForm.get('country').invalid && teamForm.get('country').touched" style="text-align: center">
                   <div class="input-err-message" style="text-align: center">
                       <p style="color: red; white-space: nowrap;">Can't be empty!</p>
                   </div>
@@ -83,13 +86,13 @@
           </div>
         </form>
 
-      <form [formGroup]="Form2" *ngIf="data.mode === 'addGame' || data.mode === 'editGame'">
+      <form [formGroup]="gameForm" *ngIf="data.mode === 'addGame' || data.mode === 'editGame'">
           <div class="ui field">
             <label style="text-align: left">
               Name:
               <input type="text" formControlName="name">
             </label>
-            <div class= "error-message" *ngIf= "Form2.get('name').invalid && Form2.get('name').touched" style="text-align: center">
+            <div class= "error-message" *ngIf= "gameForm.get('name').invalid && gameForm.get('name').touched" style="text-align: center">
                 <div class="input-err-message" style="text-align: center">
                     <p style="color: red; white-space: nowrap;">Must be at least 3 characters!</p>
                 </div>
@@ -102,7 +105,7 @@
                   <option *ngFor="let classification of classifications" value="{{classification._id}}">{{ classification.name }}</option>
               </select>
             </label>
-            <div class= "error-message" *ngIf= "Form2.get('classification').invalid && Form2.get('classification').touched" style="text-align: center">
+            <div class= "error-message" *ngIf= "gameForm.get('classification').invalid && gameForm.get('classification').touched" style="text-align: center">
                 <div class="input-err-message" style="text-align: center">
                     <p style="color: red; white-space: nowrap;">Must be selected!</p>
                 </div>
@@ -117,7 +120,7 @@
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
               </label>
-              <div class= "error-message" *ngIf= "Form2.get('date').invalid && Form2.get('date').touched" style="text-align: center">
+              <div class= "error-message" *ngIf= "gameForm.get('date').invalid && gameForm.get('date').touched" style="text-align: center">
                   <div class="input-err-message" style="text-align: center">
                       <p style="color: red; white-space: nowrap;">Can't be empty!</p>
                   </div>
@@ -132,7 +135,7 @@
                     <mat-datepicker #picker2></mat-datepicker>
                   </mat-form-field>
               </label>
-              <div class= "error-message" *ngIf= "Form2.get('date').invalid && Form2.get('date').touched" style="text-align: center">
+              <div class= "error-message" *ngIf= "gameForm.get('date').invalid && gameForm.get('date').touched" style="text-align: center">
                   <div class="input-err-message" style="text-align: center">
                       <p style="color: red; white-space: nowrap;">Can't be empty!</p>
                   </div>
@@ -167,8 +170,8 @@
 <div class="ui divider"></div>
 
 <!-->Add & Edit Actions<-->
-<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
- || data.mode === 'addGame'" 
+<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification '
+ || data.mode === 'addGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual'"
 style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button" (click)="onSaveClick(data.mode)">
     <i class="add icon"></i>

@@ -17,7 +17,6 @@ export class ClassificationsComponent implements OnInit {
   totalClassifications;
   numPerPage;
   loopTimes;
-  pagesize;
 
   constructor(
     private classificationsService: ClassificationsService,
@@ -29,7 +28,6 @@ export class ClassificationsComponent implements OnInit {
 
   ngOnInit() {
     this.getClassificationsPara(1);
-    this.pagesize = this.classificationsService.getCurrentPageSize();
     this.classificationsService.classification$.subscribe(classificationTable => {
       if (classificationTable === 'changed') {
         this.getClassificationsPara(this.classificationsService.getCurrentPageNumber());
@@ -40,7 +38,6 @@ export class ClassificationsComponent implements OnInit {
   setPageSize(event) {
     const numPerPage = event.target.value;
     this.classificationsService.setCurrentPageSize(numPerPage);
-    this.pagesize = this.classificationsService.getCurrentPageSize();
     this.getClassificationsPara(1);
   }
   getClassificationsPara(pageNumber) {
