@@ -21,6 +21,7 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Country</th>
             <th></th>
             <th></th>
           </tr>
@@ -30,6 +31,7 @@
             <td style="display: none">{{ team._id }}</td>
             <td>{{ team.name }}</td>
             <td>{{ team.description }}</td>
+            <td>{{ team.country }}</td>
             <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'deleteTeam', obj: team})">
               <i class="trash icon"></i>
             </button></td>
@@ -40,7 +42,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="4">
+            <th colspan="5">
               <app-dialog></app-dialog>
               <div class="ui right floated pagination menu">
                 <a class="icon item">

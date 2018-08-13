@@ -27,7 +27,6 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.getTeams();
     this.getTeamsPara(1);
     this.teamService.team$.subscribe(teamTable => {
       if (teamTable === 'changed') {

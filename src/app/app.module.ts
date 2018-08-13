@@ -14,6 +14,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
+
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
@@ -28,6 +32,8 @@ import { DialogComponent, DialogContentComponent } from './component/dialog/dial
 import { SnackBarComponent } from './component/snackBar/snack-bar/snack-bar.component';
 import { ClassificationsComponent } from './component/classifications/classifications/classifications.component';
 import { GamesComponent } from './component/games/games/games.component';
+import { DataPickerComponent } from './component/data-picker/data-picker/data-picker.component';
+import { IndividualsComponent } from './component/individuals/individuals/individuals.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +48,9 @@ import { GamesComponent } from './component/games/games/games.component';
     DialogContentComponent,
     SnackBarComponent,
     ClassificationsComponent,
-    GamesComponent
+    GamesComponent,
+    DataPickerComponent,
+    IndividualsComponent
   ],
   entryComponents: [DialogContentComponent],
   imports: [
@@ -59,6 +67,8 @@ import { GamesComponent } from './component/games/games/games.component';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {

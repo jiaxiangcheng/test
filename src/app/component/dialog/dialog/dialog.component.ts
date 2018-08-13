@@ -9,6 +9,7 @@ import { SnackBarService } from '../../../services/snackBar/snack-bar.service';
 import { ClassificationsService } from '../../../services/classifications/classifications.service';
 import { Classification } from '../../../model/classification';
 import { GamesService } from '../../../services/games/games.service';
+import {MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 // 为了在dialog-content能够acces
 export interface DialogData {
@@ -99,7 +100,8 @@ export class DialogContentComponent implements OnInit {
     gameToDelete;
     teamToDelete;
     classificationToDelete;
-
+    startDate;
+    endDate;
     Form = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -110,8 +112,19 @@ export class DialogContentComponent implements OnInit {
 
     Form2 = new FormGroup({
       name: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
+      classification: new FormControl('', Validators.required),
+      date: new FormControl('', Validators.required)
     });
+
+    Form3 = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3)
+      ]),
+      description: new FormControl('', Validators.required),
+      country: new FormControl('', Validators.required)
+    });
+
     constructor(
       public dialogRef: MatDialogRef<DialogContentComponent>,
       @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -128,7 +141,31 @@ export class DialogContentComponent implements OnInit {
     }
 
     ngOnInit() {
+      this.classificationsService.getAllClassifications(1, this.classificationsService.getTotal())
+      .subscribe(res => {
+        this.classifications = res.classifications;
+      });
+    }
 
+    addDate(type: string, event: MatDatepickerInputEvent<Date>) {
+      let date = new Date();
+      date = this.Form2.value.date;
+      if (type === 'start') {
+        this.startDate = date.getTime() / 1000 + '';
+         console.log(this.startDate);
+      }
+      if (type === 'end') {
+        this.endDate = date.getTime() / 1000 + '';
+         console.log(this.endDate);
+      }
+    }
+
+    onSelectStartDate(date: string) {
+      this.startDate = date;
+    }
+
+    onSelectEndDate(date: string) {
+      this.endDate = date;
     }
 
     onCancelClick(): void {
@@ -136,10 +173,11 @@ export class DialogContentComponent implements OnInit {
     }
 
     onSaveClick(mode): void {
-      const teamName = this.Form.value.name;
-      const teamDescription = this.Form.value.description;
+      const teamName = this.Form3.value.name;
+      const teamDescription = this.Form3.value.description;
+      const teamCountry = this.Form3.value.country;
       if (mode === 'addTeam') {
-        this.teamService.addTeams({name: teamName, description: teamDescription})
+        this.teamService.addTeams({name: teamName, description: teamDescription, country: teamCountry})
         .subscribe(team => {
             if (this.messageService.getExists()) {
               this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
@@ -155,8 +193,9 @@ export class DialogContentComponent implements OnInit {
         const teamToUpdate = this.data.obj;
         const auxTeam = {
           _id: teamToUpdate._id,
-          name: this.Form.value.name,
-          description: this.Form.value.description
+          name: this.Form3.value.name,
+          description: this.Form3.value.description,
+          country: this.Form3.value.country
         };
         this.teamService.updateTeam(auxTeam)
         .subscribe(res => {
@@ -199,18 +238,20 @@ export class DialogContentComponent implements OnInit {
             this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
             this.messageService.setMessage(null);
           } else {
-            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
             this.classificationsService.classificationDataChanged('changed');
+            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
             this.onCancelClick();
           }
         });
       }
       if (mode === 'addGame') {
         const gameName = this.Form2.value.name;
-        const classification = this.Form2.value.classification;
+        const classificationID = this.Form2.value.classification;
         const auxGame = {
           name: gameName,
-          classification: classification
+          classification: classificationID,
+          startDate: this.startDate,
+          endDate: this.endDate
         };
         this.gamesService.addGames(auxGame)
           .subscribe(res => {

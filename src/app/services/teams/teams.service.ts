@@ -72,7 +72,8 @@ export class TeamsService {
   }
 
   updateTeam(team): Observable<any> {
-    return this.http.put(`${this.teamsUrl}/${team._id}`, {name: team.name, description: team.description},  this.httpOptions).pipe(
+    return this.http.put(`${this.teamsUrl}/${team._id}`, {name: team.name, description: team.description, country: team.country},
+    this.httpOptions).pipe(
       catchError(this.handleError<Team>('updateTeam')),
       tap(_ => console.log(`updated team id=${team._id}`)
     ));

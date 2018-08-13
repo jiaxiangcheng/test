@@ -17,6 +17,8 @@ export class ClassificationsService {
   private currentPageNumber = 1;              // default pageNumber is 1
   private classificationSubject = new Subject<any>(); // 发送器，通知有变化
   classification$ = this.classificationSubject.asObservable();    // 数据储存的地方， 可以被subscribe()然后就可以获取数据
+  total;
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -28,15 +30,26 @@ export class ClassificationsService {
     private http: HttpClient,
     private cookieService: CookieService,
     private messageService: MessageService,
-    private dialogService: DialogService
   ) { }
 
-  // getClassification(): Observable<any> {
-  //   return this.http.get<any>(this.classificationsUrl, this.httpOptions);
-  // }
+  setTotal(total) {
+    this.total = total;
+  }
+
+  getTotal() {
+    return this.total;
+  }
+
+  getClassification(): Observable<any> {
+     return this.http.get<any>(this.classificationsUrl, this.httpOptions);
+  }
+
+  getAllClassifications(pageNumber, pageSize): Observable<any> {
+    return this.http.get<any>(`${this.classificationsUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
 
   getClassificationsPara(pageNumber, pageSize): Observable<any> {
-    this.currentPagesize = pageSize;
+    this.currentPagesize = pageSize;        // 注意！！！！！！！！！
     return this.http.get<any>(`${this.classificationsUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
@@ -92,6 +105,7 @@ export class ClassificationsService {
   }
 
   classificationDataChanged(mode) {
+    console.log('CLASS Has changed');
     this.classificationSubject.next(mode);  // emit有变化，并且传送新的value
   }
 }

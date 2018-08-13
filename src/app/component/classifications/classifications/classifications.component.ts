@@ -17,6 +17,7 @@ export class ClassificationsComponent implements OnInit {
   totalClassifications;
   numPerPage;
   loopTimes;
+  pagesize;
 
   constructor(
     private classificationsService: ClassificationsService,
@@ -27,10 +28,11 @@ export class ClassificationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getClassificationPara(1);
+    this.getClassificationsPara(1);
+    this.pagesize = this.classificationsService.getCurrentPageSize();
     this.classificationsService.classification$.subscribe(classificationTable => {
       if (classificationTable === 'changed') {
-        this.getClassificationPara(this.classificationsService.getCurrentPageNumber());
+        this.getClassificationsPara(this.classificationsService.getCurrentPageNumber());
       }
     });
   }
@@ -38,26 +40,26 @@ export class ClassificationsComponent implements OnInit {
   setPageSize(event) {
     const numPerPage = event.target.value;
     this.classificationsService.setCurrentPageSize(numPerPage);
-    this.getClassificationPara(1);
+    this.pagesize = this.classificationsService.getCurrentPageSize();
+    this.getClassificationsPara(1);
   }
-  getClassificationPara(pageNumber) {
+  getClassificationsPara(pageNumber) {
     this.classificationsService.setCurrentPageNumber(pageNumber);
     this.classificationsService.getClassificationsPara(this.classificationsService.getCurrentPageNumber(),
     this.classificationsService.getCurrentPageSize())
       .subscribe(res => {
-        console.log('RES:', res);
         if (this.messageService.getExists()) {
           this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
           this.messageService.setMessage(null);
         } else {
           this.totalClassifications = res.total;
+          this.classificationsService.setTotal(this.totalClassifications);
           const totalPage = Math.ceil(Number(this.totalClassifications) / this.classificationsService.getCurrentPageSize());
           this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
           this.classifications = res.classifications;
         }
       });
   }
-
 
   openModal(mode) {
     this.dialogService.openDialog(mode);

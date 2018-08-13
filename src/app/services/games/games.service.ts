@@ -13,6 +13,13 @@ import { DialogService } from '../../services/dialog/dialog.service';
 export class GamesService {
   private token = this.cookieService.get('token');
   private gamesUrl = 'https://qtdas-admin.herokuapp.com/api/games';
+  private currentPagesize = 10;         // default pagesize is 10
+  private currentPageNumber = 1;              // default pageNumber is 1
+
+
+  private gameSubject = new Subject<any>(); // 发送器，通知有变化
+  game$ = this.gameSubject.asObservable();    // 数据储存的地方， 可以被subscribe()然后就可以获取数据
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -28,8 +35,23 @@ export class GamesService {
   ) { }
 
 
-  getGames(): Observable<any> {
-    return this.http.get<any>(this.gamesUrl, this.httpOptions);
+  setCurrentPageSize(num) {
+    this.currentPagesize = num;
+  }
+  getCurrentPageSize() {
+    return this.currentPagesize;
+  }
+  setCurrentPageNumber(num) {
+    this.currentPageNumber = num;
+  }
+  getCurrentPageNumber() {
+    return this.currentPageNumber;
+  }
+
+
+  getGamesPara(pageNumber, pageSize): Observable<any> {
+    this.currentPagesize = pageSize;
+    return this.http.get<any>(`${this.gamesUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
   addGames(game): Observable<Game> {
@@ -60,12 +82,16 @@ export class GamesService {
         // TODO: send the error to remote logging infrastructure
         // console.error(error);
         // TODO: better job of transforming error for user consumption
-        // console.log(`${operation} failed: ${error.message}`);
+         console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
         this.messageService.setMessage(error.error);
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
+  }
+
+  gameDataChanged(mode) {
+    this.gameSubject.next(mode);  // emit有变化，并且传送新的value
   }
 }

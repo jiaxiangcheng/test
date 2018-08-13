@@ -23,7 +23,8 @@
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <div class="ui divider"></div>
-      <form [formGroup]="Form" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'">
+      
+      <form [formGroup]="Form" *ngIf="data.mode === 'addClassification' || data.mode === 'editClassification'">
         <div class="ui field">
           <label style="text-align: left">
             Name:
@@ -48,6 +49,40 @@
         </div>
       </form>
 
+      <form [formGroup]="Form3" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam'">
+          <div class="ui field">
+            <label style="text-align: left">
+              Name:
+              <input type="text" formControlName="name">
+            </label>
+            <div class= "error-message" *ngIf= "Form3.get('name').invalid && Form3.get('name').touched" style="text-align: center">
+                <div class="input-err-message" style="text-align: center">
+                    <p style="color: red; white-space: nowrap;">Must be at least 3 characters!</p>
+                </div>
+            </div>
+          </div>
+          <div class="ui field">
+            <label style="text-align: left">
+              Desciption:
+              <input type="text" formControlName="description">
+            </label>
+            <div class= "error-message" *ngIf= "Form3.get('description').invalid && Form3.get('description').touched" style="text-align: center">
+                <div class="input-err-message" style="text-align: center">
+                    <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+                </div>
+            </div>
+            <label style="text-align: left">
+                Country:
+                <input type="text" formControlName="country">
+              </label>
+              <div class= "error-message" *ngIf= "Form3.get('country').invalid && Form3.get('country').touched" style="text-align: center">
+                  <div class="input-err-message" style="text-align: center">
+                      <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+                  </div>
+              </div>
+          </div>
+        </form>
+
       <form [formGroup]="Form2" *ngIf="data.mode === 'addGame' || data.mode === 'editGame'">
           <div class="ui field">
             <label style="text-align: left">
@@ -64,10 +99,44 @@
             <label style="text-align: left">
               Classification:
               <select class="ui dropdown" formControlName="classification" >
-                  <option *ngFor="let classification of classifications" value="{ id: {{ classification._id }}, 
-                  name: {{ classification.name }}, description: {{ classification.description }} }">{{ classification.name }}</option>
+                  <option *ngFor="let classification of classifications" value="{{classification._id}}">{{ classification.name }}</option>
               </select>
             </label>
+            <div class= "error-message" *ngIf= "Form2.get('classification').invalid && Form2.get('classification').touched" style="text-align: center">
+                <div class="input-err-message" style="text-align: center">
+                    <p style="color: red; white-space: nowrap;">Must be selected!</p>
+                </div>
+            </div>
+          </div>
+          <div class="ui field">
+              <label style="text-align: left">
+                Start date:
+                <mat-form-field style="width: 252px;">
+                    <input matInput [matDatepicker]="picker" (dateInput)="addDate('start', $event)" formControlName="date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+              </label>
+              <div class= "error-message" *ngIf= "Form2.get('date').invalid && Form2.get('date').touched" style="text-align: center">
+                  <div class="input-err-message" style="text-align: center">
+                      <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+                  </div>
+              </div>
+          </div>
+          <div class="ui field">
+              <label style="text-align: left">
+                End date:
+                <mat-form-field style="width: 252px;">
+                    <input matInput [matDatepicker]="picker2" (dateInput)="addDate('end', $event)" formControlName="date" style="width: 252px;">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+              </label>
+              <div class= "error-message" *ngIf= "Form2.get('date').invalid && Form2.get('date').touched" style="text-align: center">
+                  <div class="input-err-message" style="text-align: center">
+                      <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+                  </div>
+              </div>
           </div>
         </form>
     </div>
