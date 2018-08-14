@@ -108,6 +108,7 @@ export class DialogComponent implements OnInit, OnDestroy {
 export class DialogContentComponent implements OnInit {
 
     subscriptions: Array<Subscription> = [];      // 为了推出component的时候取消订阅，要不然再次进来的时候回再次订阅就会变成订阅两次
+
     classifications: Array<Classification> = [];
     countries: Array<any> = [];
     individuals: Array<Individual> = [];
@@ -122,6 +123,7 @@ export class DialogContentComponent implements OnInit {
 
     startDate;
     endDate;
+
     classificationForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -137,6 +139,7 @@ export class DialogContentComponent implements OnInit {
       typeOfGame: new FormControl('', Validators.required)
     });
 
+    // Individual 和 Team 共用一个Form
     teamForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -188,11 +191,9 @@ export class DialogContentComponent implements OnInit {
       date = this.gameForm.value.date;
       if (type === 'start') {
         this.startDate = date.getTime() / 1000 + '';
-         console.log(this.startDate);
       }
       if (type === 'end') {
         this.endDate = date.getTime() / 1000 + '';
-         console.log(this.endDate);
       }
     }
 
@@ -305,7 +306,6 @@ export class DialogContentComponent implements OnInit {
       }
       if (mode === 'editGame') {
         const gameToUpdate = this.data.obj;
-        console.log(gameToUpdate);
         const auxGame = {
           _id: gameToUpdate._id,
           classification: gameToUpdate.classification._id,
@@ -314,7 +314,6 @@ export class DialogContentComponent implements OnInit {
           endDate: this.endDate,
           contestants: this.gameForm.value.typeOfGame
         };
-        console.log('auxgame', auxGame);
         this.gamesService.updateGame(auxGame)
         .subscribe(res => {
           if (this.messageService.getExists()) {
@@ -328,7 +327,6 @@ export class DialogContentComponent implements OnInit {
         });
       }
       if (mode === 'addIndividual') {
-        // Teamform is used for team and individual
         const individualName = this.teamForm.value.name;
         const individualDescription = this.teamForm.value.description;
         const individualCountry = this.teamForm.value.country;
@@ -365,7 +363,6 @@ export class DialogContentComponent implements OnInit {
         });
       }
     }
-
 
     onDeleteClick(mode) {
       if (mode === 'deleteTeam') {
@@ -420,6 +417,7 @@ export class DialogContentComponent implements OnInit {
         });
       }
     }
+
     setType(type) {
       this.contestantType = type;
     }

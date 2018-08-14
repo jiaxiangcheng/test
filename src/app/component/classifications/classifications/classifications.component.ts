@@ -40,6 +40,8 @@ export class ClassificationsComponent implements OnInit {
     this.classificationsService.setCurrentPageSize(numPerPage);
     this.getClassificationsPara(1);
   }
+
+  // 这是一个Get方法，但是他需要提供第一页和每页数量
   getClassificationsPara(pageNumber) {
     this.classificationsService.setCurrentPageNumber(pageNumber);
     this.classificationsService.getClassificationsPara(this.classificationsService.getCurrentPageNumber(),
@@ -61,6 +63,7 @@ export class ClassificationsComponent implements OnInit {
   openModal(mode) {
     this.dialogService.openDialog(mode);
   }
+
   goBack() {
     this.router.navigate(['/userinfo']);
   }

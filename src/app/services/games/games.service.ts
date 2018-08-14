@@ -32,9 +32,7 @@ export class GamesService {
     private cookieService: CookieService,
     private messageService: MessageService,
   ) {
-    console.log('token: ', this.token);
   }
-
 
   setCurrentPageSize(num) {
     this.currentPagesize = num;
@@ -49,14 +47,12 @@ export class GamesService {
     return this.currentPageNumber;
   }
 
-
   getGamesPara(pageNumber, pageSize): Observable<any> {
     this.currentPagesize = pageSize;
     return this.http.get<any>(`${this.gamesUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
   addGames(game): Observable<Game> {
-    console.log('game', game);
     return this.http.post<Game>(this.gamesUrl, game, this.httpOptions)
       .pipe(
         catchError(this.handleError<Game>('creategame')),
@@ -72,7 +68,6 @@ export class GamesService {
   }
 
   updateGame(game): Observable<any> {
-    console.log('game::', game);
     return this.http.put(`${this.gamesUrl}/${game._id}`, {
       name: game.name,
       classification: game.classification,
@@ -91,7 +86,7 @@ export class GamesService {
         // TODO: send the error to remote logging infrastructure
         // console.error(error);
         // TODO: better job of transforming error for user consumption
-         console.log(`${operation} failed: ${error.message}`);
+        // console.log(`${operation} failed: ${error.message}`);
         // Catch the status code and do some actions if it is a particular situation
         this.messageService.setMessage(error.error);
       }
