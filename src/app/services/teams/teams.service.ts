@@ -15,7 +15,7 @@ export class TeamsService {
   private teamsUrl = 'https://qtdas-admin.herokuapp.com/api/teams';
   private currentPagesize = 10;         // default pagesize is 10
   private currentPageNumber = 1;              // default pageNumber is 1
-
+  total;
   private teamSubject = new Subject<any>(); // 发送器，通知有变化
   team$ = this.teamSubject.asObservable();    // 数据储存的地方， 可以被subscribe()然后就可以获取数据
 
@@ -37,6 +37,10 @@ export class TeamsService {
     return this.http.get<any>(`${this.teamsUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
+  getAllTeams(pageNumber, pageSize): Observable<any> {
+    return this.http.get<any>(`${this.teamsUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
   setCurrentPageSize(num) {
     this.currentPagesize = num;
   }
@@ -48,6 +52,13 @@ export class TeamsService {
   }
   getCurrentPageNumber() {
     return this.currentPageNumber;
+  }
+
+  setTotal(total) {
+    this.total = total;
+  }
+  getTotal() {
+    return this.total;
   }
 
   addTeams(team): Observable<Team> {

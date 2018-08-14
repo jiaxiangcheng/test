@@ -36,17 +36,15 @@ export class IndividualsComponent implements OnInit {
     this.individualService.setCurrentPageNumber(pageNumber);
     this.individualService.getIndividualsPara(this.individualService.getCurrentPageNumber(), this.individualService.getCurrentPageSize())
       .subscribe(res => {
-        console.log(res);
         if (this.messageService.getExists()) {
           this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
           this.messageService.setMessage(null);
         } else {
           this.totalIndividual = res.total;
-          console.log(res.total);
           const totalPage = Math.ceil(Number(this.totalIndividual) / this.individualService.getCurrentPageSize());
-          // this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
-          console.log(res.individual);
-          this.individuals = res.individual;
+          this.individualService.setTotal(this.totalIndividual);
+          this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
+          this.individuals = res.individuals;
         }
       });
   }

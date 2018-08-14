@@ -31,8 +31,9 @@ export class GamesService {
     private http: HttpClient,
     private cookieService: CookieService,
     private messageService: MessageService,
-    private dialogService: DialogService
-  ) { }
+  ) {
+    console.log('token: ', this.token);
+  }
 
 
   setCurrentPageSize(num) {
@@ -55,6 +56,7 @@ export class GamesService {
   }
 
   addGames(game): Observable<Game> {
+    console.log('game', game);
     return this.http.post<Game>(this.gamesUrl, game, this.httpOptions)
       .pipe(
         catchError(this.handleError<Game>('creategame')),

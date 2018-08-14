@@ -54,6 +54,7 @@ export class GamesComponent implements OnInit {
           // console.log('totalpage: ', totalPage);
           this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
           this.games = res.games;
+          console.log(this.games);
         }
       });
   }

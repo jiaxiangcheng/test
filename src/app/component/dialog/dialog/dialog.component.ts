@@ -12,6 +12,8 @@ import { GamesService } from '../../../services/games/games.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CountryService } from '../../../services/country/country.service';
 import { IndividualService } from '../../../services/individual/individual.service';
+import { Individual } from '../../../model/individual';
+import { Team } from '../../../model/team';
 
 // 为了在dialog-content能够acces
 export interface DialogData {
@@ -73,6 +75,12 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (mode.mode === 'addIndividual') {
           this.openDialog(mode);
         }
+        if (mode.mode === 'editIndividual') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'deleteIndividual') {
+          this.openDialog(mode);
+        }
       })
     );
   }
@@ -102,10 +110,16 @@ export class DialogContentComponent implements OnInit {
     subscriptions: Array<Subscription> = [];      // 为了推出component的时候取消订阅，要不然再次进来的时候回再次订阅就会变成订阅两次
     classifications: Array<Classification> = [];
     countries: Array<any> = [];
+    individuals: Array<Individual> = [];
+    teams: Array<Team> = [];
+
+    contestantType;
 
     gameToDelete;
     teamToDelete;
+    individualToDelete;
     classificationToDelete;
+
     startDate;
     endDate;
     classificationForm = new FormGroup({
@@ -119,7 +133,8 @@ export class DialogContentComponent implements OnInit {
     gameForm = new FormGroup({
       name: new FormControl('', Validators.required),
       classification: new FormControl('', Validators.required),
-      date: new FormControl('', Validators.required)
+      date: new FormControl('', Validators.required),
+      typeOfGame: new FormControl('', Validators.required)
     });
 
     teamForm = new FormGroup({
@@ -146,12 +161,21 @@ export class DialogContentComponent implements OnInit {
       this.gameToDelete = this.data.obj;
       this.teamToDelete = this.data.obj;
       this.classificationToDelete = this.data.obj;
+      this.individualToDelete = this.data.obj;
     }
 
     ngOnInit() {
       this.classificationsService.getAllClassifications(1, this.classificationsService.getTotal())
       .subscribe(res => {
         this.classifications = res.classifications;
+      });
+      this.individualService.getAllIndividuals(1, this.individualService.getTotal())
+      .subscribe(res => {
+        this.individuals = res.individuals;
+      });
+      this.teamService.getAllTeams(1, this.teamService.getTotal())
+      .subscribe(res => {
+        this.teams = res.teams;
       });
       this.countryService.getCountries().subscribe(res => {
         this.countries = res;
@@ -258,11 +282,14 @@ export class DialogContentComponent implements OnInit {
       if (mode === 'addGame') {
         const gameName = this.gameForm.value.name;
         const classificationID = this.gameForm.value.classification;
+        const contestants = this.gameForm.value.typeOfGame;
+        console.log(contestants);
         const auxGame = {
           name: gameName,
           classification: classificationID,
           startDate: this.startDate,
-          endDate: this.endDate
+          endDate: this.endDate,
+          contestants: contestants
         };
         this.gamesService.addGames(auxGame)
           .subscribe(res => {
@@ -293,7 +320,28 @@ export class DialogContentComponent implements OnInit {
             }
         });
       }
+      if (mode === 'editIndividual') {
+        const individualToUpdate = this.data.obj;
+        const auxIndividual = {
+          _id: individualToUpdate._id,
+          name: this.teamForm.value.name,
+          description: this.teamForm.value.description,
+          country: this.teamForm.value.country
+        };
+        this.individualService.updateIndividual(auxIndividual)
+        .subscribe(res => {
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
+            this.individualService.individualDataChanged('changed');
+            this.onCancelClick();
+          }
+        });
+      }
     }
+
 
     onDeleteClick(mode) {
       if (mode === 'deleteTeam') {
@@ -316,6 +364,7 @@ export class DialogContentComponent implements OnInit {
             this.messageService.setMessage(null);
           } else {
             this.classificationsService.classificationDataChanged('changed');
+            this.snackBarService.openSnackBar({message: 'Delete successful!', action: 'Ok'});
             this.onCancelClick();
           }
         });
@@ -327,11 +376,27 @@ export class DialogContentComponent implements OnInit {
             this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
             this.messageService.setMessage(null);
           } else {
-            // this.classificationsService.teamDataChanged('changed');
+            this.gamesService.gameDataChanged('changed');
+            this.snackBarService.openSnackBar({message: 'Delete successful!', action: 'Ok'});
+            this.onCancelClick();
+          }
+        });
+      }
+      if (mode === 'deleteIndividual') {
+        this.individualService.deleteIndividual(this.individualToDelete)
+        .subscribe(res => {
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            this.individualService.individualDataChanged('changed');
+            this.snackBarService.openSnackBar({message: 'Delete successful!', action: 'Ok'});
             this.onCancelClick();
           }
         });
       }
     }
-
+    setType(type) {
+      this.contestantType = type;
+    }
 }

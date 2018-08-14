@@ -15,7 +15,7 @@
 
 <!-->Add & Edit Content<-->
 <div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
-|| data.mode === 'addGame' || data.mode === 'addIndividual'">
+|| data.mode === 'addGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'deleteIndividual'">
   <div class="ui form">
       <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
       <h1 *ngIf="data.mode === 'addClassification'" >Add Classification:</h1>
@@ -23,6 +23,7 @@
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <h1 *ngIf="data.mode === 'addIndividual'" >Add individual:</h1>
+      <h1 *ngIf="data.mode === 'editIndividual'" >Edit individual:</h1>
       <div class="ui divider"></div>
       
       <form [formGroup]="classificationForm" *ngIf="data.mode === 'addClassification' || data.mode === 'editClassification'">
@@ -130,7 +131,7 @@
               <label style="text-align: left">
                 End date:
                 <mat-form-field style="width: 252px;">
-                    <input matInput [matDatepicker]="picker2" (dateInput)="addDate('end', $event)" formControlName="date" style="width: 252px;">
+                    <input matInput [matDatepicker]="picker2" (dateInput)="addDate('end', $event)" formControlName="date">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                   </mat-form-field>
@@ -141,18 +142,46 @@
                   </div>
               </div>
           </div>
+          <div class="ui field">
+              <label style="text-align: left"> Type of game: </label>
+              <input type="radio" name="1" value="individual" (change)="setType('individual')"> Individual
+              <input type="radio" name="1" value="team" (change)="setType('team')"> Team
+          </div>
+          <div class="ui field">
+            <label style="text-align: left">
+              Contestants:
+              <mat-form-field *ngIf="contestantType === 'team'">
+                <mat-select [formControl]="gameForm.get('typeOfGame')" multiple>
+                  <mat-option *ngFor="let team of teams" [value]="{'kind': 'Team', 'contestant': team._id}">{{team.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field *ngIf="contestantType === 'individual'">
+                <mat-select [formControl]="gameForm.get('typeOfGame')" multiple>
+                  <mat-option *ngFor="let individual of individuals" [value]="{'kind': 'Individual', 'contestant': individual._id}">{{individual.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </label>
+            <div class= "error-message" *ngIf= "gameForm.get('classification').invalid && gameForm.get('classification').touched" style="text-align: center">
+                <div class="input-err-message" style="text-align: center">
+                    <p style="color: red; white-space: nowrap;">Must be selected!</p>
+                </div>
+            </div>
+          </div>
         </form>
     </div>
 </div>
 
 <!-->Delete Content<-->
-<div class="deleteTeam" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame'">
+<div class="deleteTeam" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual'">
   <div class="content-panel">
       <div class="ui icon header">
         <i class="trash icon"></i>
         <p *ngIf="data.mode === 'deleteTeam'">Are you sure to delete the team?
         <p *ngIf="data.mode === 'deleteClassification'">Are you sure to delete the classification?
         <p *ngIf="data.mode === 'deleteGame'">Are you sure to delete the game?
+        <p *ngIf="data.mode === 'deleteIndividual'">Are you sure to delete the individual?
       </div>
       <div class="content" *ngIf="data.mode === 'deleteTeam'">
         Team name: <p style="font-weight: bold;">{{ teamToDelete.name }}</p>
@@ -162,6 +191,9 @@
       </div>
       <div class="content" *ngIf="data.mode === 'deleteGame'">
         Game name: <p style="font-weight: bold;">{{ gameToDelete.name }}</p>
+      </div>
+      <div class="content" *ngIf="data.mode === 'deleteIndividual'">
+        Individual name: <p style="font-weight: bold;">{{ individualToDelete.name }}</p>
       </div>
   </div>
 </div>
@@ -184,7 +216,8 @@ style="text-align: center; padding-top: 10px;">
 </div>
 
 <!-->Delete Actions<-->
-<div class="actions" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame'" style="text-align: center; padding-top: 10px;">
+<div class="actions" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual'" 
+  style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button"  (click)="onDeleteClick(data.mode)">
     <i class="checkmark icon"></i>
     Yes

@@ -21,6 +21,9 @@
           <tr>
             <th>Name</th>
             <th>Classification</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Contestants</th>
             <th></th>
             <th></th>
           </tr>
@@ -29,7 +32,19 @@
           <tr *ngFor="let game of games">
             <td style="display: none">{{ game._id }}</td>
             <td>{{ game.name }}</td>
-            <td>{{ game.classification }}</td>
+            <td>
+              <ul>
+                <li><span style="color: red;">ID: </span>{{ game.classification._id }}</li>
+                <li><span style="color: red;">Name: </span>{{ game.classification.name }}</li>
+              </ul>
+            </td>
+            <td>{{ game.startDate }}</td>
+            <td>{{ game.endDate }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let contestant of game.contestants">{{ contestant.kind }} </li>
+              </ul>
+            </td>
             <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'deleteGame', obj: game})">
               <i class="trash icon"></i>
             </button></td>
@@ -40,7 +55,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="4">
+            <th colspan="7">
               <app-dialog></app-dialog>
               <div class="ui right floated pagination menu">
                 <a class="icon item">

@@ -49,7 +49,7 @@ export class TeamsComponent implements OnInit {
         } else {
           this.totalTeams = res.total;
           const totalPage = Math.ceil(Number(this.totalTeams) / this.teamService.getCurrentPageSize());
-          // console.log('totalpage: ', totalPage);
+          this.teamService.setTotal(this.totalTeams);
           this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
           this.teams = res.teams;
         }

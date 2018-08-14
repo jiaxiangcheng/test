@@ -17,6 +17,7 @@ export class IndividualService {
 
   private individualSubject = new Subject<any>(); // 发送器，通知有变化
   individual$ = this.individualSubject.asObservable();    // 数据储存的地方， 可以被subscribe()然后就可以获取数据
+  total;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -35,12 +36,39 @@ export class IndividualService {
     return this.http.get<any>(`${this.individualUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
+  getAllIndividuals(pageNumber, pageSize): Observable<any> {
+    return this.http.get<any>(`${this.individualUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  }
+
   addIndividual(team): Observable<Individual> {
     return this.http.post<Individual>(this.individualUrl, team, this.httpOptions)
       .pipe(
-        catchError(this.handleError<Individual>('createTeam')),
-        tap(resp => console.log('createTeam', resp))
+        catchError(this.handleError<Individual>('createIndividual')),
+        tap(resp => console.log('createIndividual', resp))
       );
+  }
+
+  setTotal(total) {
+    this.total = total;
+  }
+
+  getTotal() {
+    return this.total;
+  }
+  updateIndividual(individual): Observable<any> {
+    return this.http.put(`${this.individualUrl}/${individual._id}`, {name: individual.name,
+      description: individual.description, country: individual.country},
+    this.httpOptions).pipe(
+      catchError(this.handleError<Individual>('updateIndividual')),
+      tap(_ => console.log(`updated individual id=${individual._id}`)
+    ));
+  }
+
+  deleteIndividual(individual): Observable<any> {
+    return this.http.delete<Individual>(`${this.individualUrl}/${individual._id}`, this.httpOptions).pipe(
+      catchError(this.handleError<Individual>('deleteIndividual')),
+      tap(_ => console.log(`deleted individual id=${individual._id}`)
+    ));
   }
 
   setCurrentPageSize(num) {
