@@ -17,6 +17,8 @@ export class GamesComponent implements OnInit {
   totalGames;
   numPerPage;
   loopTimes;
+  startDateNormalFormat;
+  endDateNormalFormat;
 
   constructor(
     private gamesService: GamesService,
@@ -51,12 +53,23 @@ export class GamesComponent implements OnInit {
         } else {
           this.totalGames = res.total;
           const totalPage = Math.ceil(Number(this.totalGames) / this.gamesService.getCurrentPageSize());
-          // console.log('totalpage: ', totalPage);
           this.loopTimes = Array(totalPage).fill(0).map((x, i) => i);
           this.games = res.games;
-          console.log(this.games);
         }
       });
+  }
+
+  timeConverter(UNIX_timestamp) {
+    const a = new Date(UNIX_timestamp * 1000);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = a.getFullYear();
+    const month = months[a.getMonth()];
+    const date = a.getDate();
+    const hour = a.getHours();
+    const min = a.getMinutes();
+    const sec = a.getSeconds();
+    const time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
   }
 
   openModal(mode) {

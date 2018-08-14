@@ -15,11 +15,12 @@
 
 <!-->Add & Edit Content<-->
 <div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
-|| data.mode === 'addGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'deleteIndividual'">
+|| data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'deleteIndividual'">
   <div class="ui form">
       <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
       <h1 *ngIf="data.mode === 'addClassification'" >Add Classification:</h1>
       <h1 *ngIf="data.mode === 'addGame'" >Add game:</h1>
+      <h1 *ngIf="data.mode === 'editGame'" >Edit game:</h1>
       <h1 *ngIf="data.mode === 'editTeam'" >Edit team:</h1>
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <h1 *ngIf="data.mode === 'addIndividual'" >Add individual:</h1>
@@ -203,7 +204,7 @@
 
 <!-->Add & Edit Actions<-->
 <div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification '
- || data.mode === 'addGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual'"
+ || data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual'"
 style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button" (click)="onSaveClick(data.mode)">
     <i class="add icon"></i>

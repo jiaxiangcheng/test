@@ -72,7 +72,14 @@ export class GamesService {
   }
 
   updateGame(game): Observable<any> {
-    return this.http.put(`${this.gamesUrl}/${game._id}`, {name: game.name, description: game.description},  this.httpOptions).pipe(
+    console.log('game::', game);
+    return this.http.put(`${this.gamesUrl}/${game._id}`, {
+      name: game.name,
+      classification: game.classification,
+      startDate: game.startDate,
+      endDate: game.endDate,
+      contestants: game.contestants
+    }, this.httpOptions).pipe(
       catchError(this.handleError<Game>('updategame')),
       tap(_ => console.log(`updated game id=${game._id}`)
     ));

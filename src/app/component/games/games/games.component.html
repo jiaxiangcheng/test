@@ -38,11 +38,15 @@
                 <li><span style="color: red;">Name: </span>{{ game.classification.name }}</li>
               </ul>
             </td>
-            <td>{{ game.startDate }}</td>
-            <td>{{ game.endDate }}</td>
+            <td [innerHtml]="timeConverter(game.startDate)">随便在这里写什么，都会被方法返回的值给替换</td>
+            <td [innerHtml]="timeConverter(game.endDate)"></td>
             <td>
               <ul>
-                <li *ngFor="let contestant of game.contestants">{{ contestant.kind }} </li>
+                <li *ngFor="let contestant of game.contestants">
+                  <span style="color: red;">Type: </span>{{ contestant.kind }} <br />
+                  <span style="color: red;">Name: </span>{{ contestant.contestant?.name }} <br />
+                  <span style="color: red;">ID: </span>{{ contestant.contestant?._id }} <br />
+                </li>
               </ul>
             </td>
             <td style="text-align: center"><button class="ui icon button" (click)="openModal({mode: 'deleteGame', obj: game})">

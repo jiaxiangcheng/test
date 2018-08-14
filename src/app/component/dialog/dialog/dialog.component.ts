@@ -182,6 +182,7 @@ export class DialogContentComponent implements OnInit {
       });
     }
 
+    // 从Date格式转换到Timestamp为了能够储存到DB里面
     addDate(type: string, event: MatDatepickerInputEvent<Date>) {
       let date = new Date();
       date = this.gameForm.value.date;
@@ -198,7 +199,6 @@ export class DialogContentComponent implements OnInit {
     onSelectStartDate(date: string) {
       this.startDate = date;
     }
-
     onSelectEndDate(date: string) {
       this.endDate = date;
     }
@@ -283,7 +283,7 @@ export class DialogContentComponent implements OnInit {
         const gameName = this.gameForm.value.name;
         const classificationID = this.gameForm.value.classification;
         const contestants = this.gameForm.value.typeOfGame;
-        console.log(contestants);
+
         const auxGame = {
           name: gameName,
           classification: classificationID,
@@ -297,11 +297,35 @@ export class DialogContentComponent implements OnInit {
               this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
               this.messageService.setMessage(null);
             } else {
-              // this.teamService.teamDataChanged('changed');  CANIVARRRRRRRR
+              this.gamesService.gameDataChanged('changed');
               this.snackBarService.openSnackBar({message: 'Added successful!', action: 'Ok'});
               this.onCancelClick();
             }
           });
+      }
+      if (mode === 'editGame') {
+        const gameToUpdate = this.data.obj;
+        console.log(gameToUpdate);
+        const auxGame = {
+          _id: gameToUpdate._id,
+          classification: gameToUpdate.classification._id,
+          name: this.gameForm.value.name,
+          startDate: this.startDate,
+          endDate: this.endDate,
+          contestants: this.gameForm.value.typeOfGame
+        };
+        console.log('auxgame', auxGame);
+        this.gamesService.updateGame(auxGame)
+        .subscribe(res => {
+          if (this.messageService.getExists()) {
+            this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
+            this.messageService.setMessage(null);
+          } else {
+            this.gamesService.gameDataChanged('changed');
+            this.snackBarService.openSnackBar({message: 'Updated successful!', action: 'Ok'});
+            this.onCancelClick();
+          }
+        });
       }
       if (mode === 'addIndividual') {
         // Teamform is used for team and individual
