@@ -46,8 +46,6 @@ export class RegisterComponent implements OnInit {
     let email = this.registerForm.value.email;
     let password = this.registerForm.value.password;
 
-    // TODO: Use EventEmitter with form value
-    // console.log(this.profileForm.get('username').value);
     name = name.trim();
     if (!name) {
       return;
@@ -63,7 +61,6 @@ export class RegisterComponent implements OnInit {
     this.userService.addUser({name: name, email: email, password: password})
       .subscribe(user => {
         if (this.messageService.getExists()) {
-          console.log(this.messageService.getMessage());
           this.dialogService.openDialog({mode: 'infoDialog', obj: this.messageService.getMessage()});
           this.messageService.setMessage(null);
         } else {

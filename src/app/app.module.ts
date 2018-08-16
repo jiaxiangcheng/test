@@ -1,12 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+// Cookies service
+import { CookieModule } from 'ngx-cookie';
+
+// Angular authentification
+import { JwtModule } from '@auth0/angular-jwt';
+
+// Reactive forms
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
+// Angular material
 import { MatInputModule } from '@angular/material';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,14 +26,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 
-
+// Components of the web app
 import { AppComponent } from './app.component';
 import { LoginComponent } from './component/login/login.component';
 import { RegisterComponent } from './component/register/register.component';
 import { UserInfoComponent } from './component/user-info/user-info.component';
 import { TeamsComponent } from './component/teams/teams.component';
-
-import { JwtModule } from '@auth0/angular-jwt';
 import { TopBarComponent } from './component/top-bar/top-bar/top-bar.component';
 import { SideBarComponent } from './component/side-bar/side-bar/side-bar.component';
 import { DialogComponent, DialogContentComponent } from './component/dialog/dialog/dialog.component';
@@ -34,6 +40,12 @@ import { ClassificationsComponent } from './component/classifications/classifica
 import { GamesComponent } from './component/games/games/games.component';
 import { DataPickerComponent } from './component/data-picker/data-picker/data-picker.component';
 import { IndividualsComponent } from './component/individuals/individuals/individuals.component';
+import { FirebaseDemoComponent } from './component/firebaseDemo/firebase-demo/firebase-demo.component';
+
+// Firebase
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -50,7 +62,8 @@ import { IndividualsComponent } from './component/individuals/individuals/indivi
     ClassificationsComponent,
     GamesComponent,
     DataPickerComponent,
-    IndividualsComponent
+    IndividualsComponent,
+    FirebaseDemoComponent
   ],
   entryComponents: [DialogContentComponent],
   imports: [
@@ -60,6 +73,7 @@ import { IndividualsComponent } from './component/individuals/individuals/indivi
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    // angular material
     MatSidenavModule,
     MatCheckboxModule,
     MatToolbarModule,
@@ -70,6 +84,9 @@ import { IndividualsComponent } from './component/individuals/individuals/indivi
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    // firebase
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
     CookieModule.forRoot(),
     JwtModule.forRoot({
       config: {
