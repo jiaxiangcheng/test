@@ -1,19 +1,23 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, throwToolbarMixedModesError } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '../../../../../node_modules/@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Subscription } from 'rxjs';
+
 import { TeamsService } from '../../../services/teams/teams.service';
 import { MessageService } from '../../../services/messages/message.service';
 import { DialogService } from '../../../services/dialog/dialog.service';
-import { Subscription } from 'rxjs';
 import { SnackBarService } from '../../../services/snackBar/snack-bar.service';
 import { ClassificationsService } from '../../../services/classifications/classifications.service';
-import { Classification } from '../../../model/classification';
 import { GamesService } from '../../../services/games/games.service';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { CountryService } from '../../../services/country/country.service';
 import { IndividualService } from '../../../services/individual/individual.service';
+import { ProductService } from '../../../services/product/product.service';
+
 import { Individual } from '../../../model/individual';
 import { Team } from '../../../model/team';
+import { Classification } from '../../../model/classification';
+import { Product } from '../../../model/product';
 
 // 为了在dialog-content能够acces
 export interface DialogData {
@@ -81,6 +85,15 @@ export class DialogComponent implements OnInit, OnDestroy {
         if (mode.mode === 'deleteIndividual') {
           this.openDialog(mode);
         }
+        if (mode.mode === 'addProduct') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'editProduct') {
+          this.openDialog(mode);
+        }
+        if (mode.mode === 'deleteProduct') {
+          this.openDialog(mode);
+        }
       })
     );
   }
@@ -120,6 +133,7 @@ export class DialogContentComponent implements OnInit {
     teamToDelete;
     individualToDelete;
     classificationToDelete;
+    productToDelete;
 
     startDate;
     endDate;
@@ -149,6 +163,18 @@ export class DialogContentComponent implements OnInit {
       country: new FormControl('', Validators.required)
     });
 
+    productForm = new FormGroup({
+      name: new FormControl('', [
+        Validators.required,
+      ]),
+      category: new FormControl('', Validators.required),
+      location: new FormControl('', Validators.required),
+      price: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]*$')
+      ])
+    });
+
     constructor(
       public dialogRef: MatDialogRef<DialogContentComponent>,
       @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -159,12 +185,14 @@ export class DialogContentComponent implements OnInit {
       private classificationsService: ClassificationsService,
       private gamesService: GamesService,
       private countryService: CountryService,
-      private individualService: IndividualService
+      private individualService: IndividualService,
+      private productService: ProductService
     ) {
       this.gameToDelete = this.data.obj;
       this.teamToDelete = this.data.obj;
       this.classificationToDelete = this.data.obj;
       this.individualToDelete = this.data.obj;
+      this.productToDelete = this.data.obj;
     }
 
     ngOnInit() {
@@ -362,6 +390,29 @@ export class DialogContentComponent implements OnInit {
           }
         });
       }
+      if (mode === 'addProduct') {
+        const productToAdd: Product = {
+          $key: '',
+          name: this.productForm.value.name,
+          category: this.productForm.value.category,
+          location: this.productForm.value.location,
+          price: this.productForm.value.price
+        };
+        this.productService.addProduct(productToAdd);
+        this.onCancelClick();
+      }
+      if (mode === 'editProduct') {
+        const productKey = this.data.obj.$key;
+        const productToEdit = {
+          $key: productKey,
+          name: this.productForm.value.name,
+          category: this.productForm.value.category,
+          location: this.productForm.value.location,
+          price: this.productForm.value.price
+        };
+        this.productService.updateProduct(productToEdit);
+        this.onCancelClick();
+      }
     }
 
     onDeleteClick(mode) {
@@ -415,6 +466,11 @@ export class DialogContentComponent implements OnInit {
             this.onCancelClick();
           }
         });
+      }
+      if (mode === 'deleteProduct') {
+        const productKey = this.data.obj.$key;
+        this.productService.deleteProduct(productKey);
+        this.onCancelClick();
       }
     }
 

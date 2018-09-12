@@ -1,6 +1,9 @@
+import { ProductService } from '../../../services/product/product.service';
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { map } from 'rxjs/operators';
+import { Product } from '../../../model/product';
+import { MessageService } from '../../../services/messages/message.service';
+import { DialogService } from '../../../services/dialog/dialog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-firebase-demo',
@@ -8,33 +11,42 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./firebase-demo.component.scss']
 })
 export class FirebaseDemoComponent implements OnInit {
-  products: any[];
+  productList: Product[] = [];
 
   constructor(
-    db: AngularFireDatabase
-  ) {
-    // No obtain the key value of each item
-    // db.list('/products').valueChanges()
-    //   .subscribe(products => {
-    //     this.products = products;
-    //     console.log(this.products);
-    //   });
-    // Example result ===> {name: "apple", price: 5}
-
-    // To obtain the key value of each item
-    db.list('/products').snapshotChanges().pipe(
-      map(actions =>
-        actions.map(a => ({ key: a.key, ...a.payload.val() }))
-      )
-    ).subscribe(products => {
-      products.map(item => item.key);
-      this.products = products;
-      console.log(this.products);
-    });
-    // Example result ===> {key: "product1", name: "apple", price: 5}
-  }
+    private productService: ProductService,
+    private dialogService: DialogService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    this.getProduct();
+    // this.productService.addProduct({
+    //   $key: '',
+    //   name: 'apple',
+    //   category: 'fruit',
+    //   location: 'china',
+    //   price: 6
+    // });
   }
 
+  getProduct() {
+    this.productService.getProducts()
+      .snapshotChanges().subscribe(item => {
+        this.productList = [];
+        item.forEach(element => {
+          const x = element.payload.toJSON();
+          x['$key'] = element.key;
+          this.productList.push(x as Product);
+        });
+      });
+  }
+
+  goBack() {
+    this.router.navigate(['/userinfo']);
+  }
+
+  openModal(mode) {
+    this.dialogService.openDialog(mode);
+  }
 }

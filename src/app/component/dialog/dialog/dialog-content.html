@@ -15,7 +15,8 @@
 
 <!-->Add & Edit Content<-->
 <div *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
-|| data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'deleteIndividual'">
+|| data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'addProduct' || 
+data.mode === 'editProduct'">
   <div class="ui form">
       <h1 *ngIf="data.mode === 'addTeam'" >Add team:</h1>
       <h1 *ngIf="data.mode === 'addClassification'" >Add Classification:</h1>
@@ -25,8 +26,10 @@
       <h1 *ngIf="data.mode === 'editClassification'" >Edit classification:</h1>
       <h1 *ngIf="data.mode === 'addIndividual'" >Add individual:</h1>
       <h1 *ngIf="data.mode === 'editIndividual'" >Edit individual:</h1>
+      <h1 *ngIf="data.mode === 'addProduct'" >Add product:</h1>
+      <h1 *ngIf="data.mode === 'editProduct'" >Edit product:</h1>
       <div class="ui divider"></div>
-      
+
       <form [formGroup]="classificationForm" *ngIf="data.mode === 'addClassification' || data.mode === 'editClassification'">
         <div class="ui field">
           <label style="text-align: left">
@@ -45,6 +48,53 @@
             <input type="text" formControlName="description">
           </label>
           <div class= "error-message" *ngIf= "classificationForm.get('description').invalid && classificationForm.get('description').touched" style="text-align: center">
+              <div class="input-err-message" style="text-align: center">
+                  <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+              </div>
+          </div>
+        </div>
+      </form>
+
+      <form [formGroup]="productForm" *ngIf="data.mode === 'addProduct' || data.mode === 'editProduct'">
+        <div class="ui field">
+          <label style="text-align: left">
+            Name:
+            <input type="text" formControlName="name">
+          </label>
+          <div class= "error-message" *ngIf= "productForm.get('name').invalid && productForm.get('name').touched" style="text-align: center">
+              <div class="input-err-message" style="text-align: center">
+                  <p style="color: red; white-space: nowrap;">Cant't be empty!</p>
+              </div>
+          </div>
+        </div>
+        <div class="ui field">
+          <label style="text-align: left">
+            Category:
+            <input type="text" formControlName="category">
+          </label>
+          <div class= "error-message" *ngIf= "productForm.get('category').invalid && productForm.get('category').touched" style="text-align: center">
+              <div class="input-err-message" style="text-align: center">
+                  <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+              </div>
+          </div>
+        </div>
+        <div class="ui field">
+          <label style="text-align: left">
+            Location:
+            <input type="text" formControlName="location">
+          </label>
+          <div class= "error-message" *ngIf= "productForm.get('location').invalid && productForm.get('location').touched" style="text-align: center">
+              <div class="input-err-message" style="text-align: center">
+                  <p style="color: red; white-space: nowrap;">Can't be empty!</p>
+              </div>
+          </div>
+        </div>
+        <div class="ui field">
+          <label style="text-align: left">
+            Price:
+            <input type="text" formControlName="price">
+          </label>
+          <div class= "error-message" *ngIf= "productForm.get('price').invalid && productForm.get('price').touched" style="text-align: center">
               <div class="input-err-message" style="text-align: center">
                   <p style="color: red; white-space: nowrap;">Can't be empty!</p>
               </div>
@@ -175,7 +225,8 @@
 </div>
 
 <!-->Delete Content<-->
-<div class="deleteTeam" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual'">
+<div class="deleteTeam" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual'
+|| data.mode === 'deleteProduct'">
   <div class="content-panel">
       <div class="ui icon header">
         <i class="trash icon"></i>
@@ -183,6 +234,7 @@
         <p *ngIf="data.mode === 'deleteClassification'">Are you sure to delete the classification?
         <p *ngIf="data.mode === 'deleteGame'">Are you sure to delete the game?
         <p *ngIf="data.mode === 'deleteIndividual'">Are you sure to delete the individual?
+        <p *ngIf="data.mode === 'deleteProduct'">Are you sure to delete the product?
       </div>
       <div class="content" *ngIf="data.mode === 'deleteTeam'">
         Team name: <p style="font-weight: bold;">{{ teamToDelete.name }}</p>
@@ -196,6 +248,9 @@
       <div class="content" *ngIf="data.mode === 'deleteIndividual'">
         Individual name: <p style="font-weight: bold;">{{ individualToDelete.name }}</p>
       </div>
+      <div class="content" *ngIf="data.mode === 'deleteProduct'">
+        Product name: <p style="font-weight: bold;">{{ productToDelete.name }}</p>
+      </div>
   </div>
 </div>
   
@@ -203,8 +258,9 @@
 <div class="ui divider"></div>
 
 <!-->Add & Edit Actions<-->
-<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification '
- || data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual'"
+<div class="actions" *ngIf="data.mode === 'addTeam' || data.mode === 'editTeam' || data.mode === 'addClassification' || data.mode === 'editClassification'
+ || data.mode === 'addGame' || data.mode === 'editGame' || data.mode === 'addIndividual' || data.mode === 'editIndividual' || data.mode === 'addProduct' || data.mode === 
+ 'editProduct'"
 style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button" (click)="onSaveClick(data.mode)">
     <i class="add icon"></i>
@@ -217,7 +273,8 @@ style="text-align: center; padding-top: 10px;">
 </div>
 
 <!-->Delete Actions<-->
-<div class="actions" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual'" 
+<div class="actions" *ngIf="data.mode === 'deleteTeam' || data.mode === 'deleteClassification' || data.mode === 'deleteGame' || data.mode === 'deleteIndividual' || 
+data.mode === 'deleteProduct'" 
   style="text-align: center; padding-top: 10px;">
   <div class="ui green basic ok button"  (click)="onDeleteClick(data.mode)">
     <i class="checkmark icon"></i>
